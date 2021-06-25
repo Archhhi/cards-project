@@ -1,14 +1,14 @@
 import React from "react";
 import SuperCheckbox from "../../common/SuperCheckBox/SuperCheckBox";
 import SuperButton from "../../common/SuperButton/SuperButton";
-import SuperInputText from "../../common/SuperInputText/SuperInputText";
+import SuperInput from "../../common/SuperInput/SuperInput";
 
 const Test = () => {
   return (
     <>
-      <SuperCheckbox/>
-      <SuperButton/>
-      <SuperInputText/>
+      <SuperInput></SuperInput>
+      <SuperButton>Кнопка</SuperButton>
+      <SuperCheckbox></SuperCheckbox>
     </>
   )
 }
