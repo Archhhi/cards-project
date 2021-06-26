@@ -6,8 +6,19 @@
   border: 1px solid $textColor;
   border-radius: 0.25em;
   outline: none;
-  background: none;
+  background-color: transparent !important;
   color: $textColor;
   font-size: 14px;
   font-family: $textFontFamily;
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    border: 1px solid $textColor;
+    -webkit-text-fill-color: $textColor;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+.errorText {
+  color: red;
 }

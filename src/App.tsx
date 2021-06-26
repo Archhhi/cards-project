@@ -18,7 +18,7 @@ function App() {
       <Route path={'/profile'} render={() => <ProfilePage/>}/>
       <Route path={'/recoveryNewPassword'} render={() => <RecoverNewPassword/>}/>
       <Route path={'/enterNewPassword'} render={() => <EnterNewPassword/>}/>
-      <Test/>
+      {/*<Test/>*/}
     </div>
   );
 }
