@@ -1,5 +1,32 @@
 @import '../../../common/styles/sass/variables';
 
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.loginBlock {
+  display: flex;
+  width: 500px;
+  padding: 40px 10px;
+  border-radius: 1em;
+  background-color: $bgSecondColor;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+
+  h1,
+  h2 {
+    display: flex;
+    margin: 0;
+    color: $textColor;
+    font-family: $titleFontFamily;
+    font-weight: normal;
+  }
+}
+
 .labelText {
+  display: flex;
   color: $textColor;
 }

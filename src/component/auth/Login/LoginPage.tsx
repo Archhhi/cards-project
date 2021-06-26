@@ -5,6 +5,7 @@ import s from "./LoginPage.module.scss";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import SuperInput from "../../../common/SuperInput/SuperInput";
 import SuperCheckbox from "../../../common/SuperCheckBox/SuperCheckBox";
+import {NavLink} from "react-router-dom";
 
 const LoginPage = () => {
 
@@ -23,41 +24,53 @@ const LoginPage = () => {
     },
   })
   return (
-    <div>
-      <h1>It-incubator</h1>
-      <h2>Sign In</h2>
+    <div className={s.container}>
+      <div className={s.loginBlock}>
+        <h1>It-incubator</h1>
+        <h2>Sign In</h2>
 
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor={'email'} className={s.labelText}>Email Address</label>
-        <SuperInput
-          id={'email'}
-          type={'email'}
-          name={'email'}
-          onChange={formik.handleChange}
-          value={formik.values.email}
-          error={formik.errors.email}
-        />
+        <form onSubmit={formik.handleSubmit}>
+          <label htmlFor={'email'} className={s.labelText}>Email Address</label>
+          <SuperInput
+            id={'email'}
+            type={'email'}
+            name={'email'}
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            error={formik.errors.email}
+          />
 
-        <label htmlFor={'password'} className={s.labelText}>Password</label>
-        <SuperInput
-          id={'password'}
-          type={'password'}
-          name={'password'}
-          onChange={formik.handleChange}
-          value={formik.values.password}
-          error={formik.errors.password}
-        />
+          <label htmlFor={'password'} className={s.labelText}>Password</label>
+          <SuperInput
+            id={'password'}
+            type={'password'}
+            name={'password'}
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            error={formik.errors.password}
+          />
 
-        <SuperCheckbox
-          id={'checkbox'}
-          type={'checkbox'}
-          name={'checkbox'}
-          onChange={formik.handleChange}
-          value={formik.values.password}
-        />
+          <SuperCheckbox
+            id={'checkbox'}
+            type={'checkbox'}
+            name={'rememberMe'}
+            onChange={formik.handleChange}
+            value={formik.values.password}
+          />
 
-        <SuperButton type={'submit'} disabled={formik.isSubmitting}>Login</SuperButton>
-      </form>
+          <NavLink to={'/recoveryNewPassword'}>
+            <span>forgot password</span>
+          </NavLink>
+
+          <SuperButton type={'submit'} disabled={formik.isSubmitting}>Login</SuperButton>
+
+          <span>Don't have an account</span>
+
+          <NavLink to={'/registration'}>
+            <span>Sign Up</span>
+          </NavLink>
+        </form>
+      </div>
     </div>
   )
 }
