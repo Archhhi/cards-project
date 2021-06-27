@@ -1,5 +1,5 @@
 import {Dispatch} from "redux"
-import {authApi} from "../../api/api"
+import {authAPI} from "../../api/api"
 
 const initialState = {
     isRegister: false
@@ -23,7 +23,7 @@ type ActionsType = ReturnType<typeof setIsRegisterAC>
 export const registerTC = (email: string, password: string) => {
     return async (dispatch: Dispatch<ActionsType>) => {
         try {
-            const response = await authApi.auth(email, password)
+            const response = await authAPI.auth(email, password)
             dispatch(setIsRegisterAC(true))
         } catch (e) {
             alert(e)

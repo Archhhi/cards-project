@@ -5,7 +5,7 @@ import {Redirect} from "react-router-dom";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import SuperInput from "../../../common/SuperInput/SuperInput";
 import {registerTC} from "../../../redux/reducers/registrationReducer";
-import { AppRootStateType } from "../../../redux/store";
+import { RootStateType } from "../../../redux/store";
 import s from './RegistrationPage.module.scss'
 
 type FormikErrorType = {
@@ -15,7 +15,7 @@ type FormikErrorType = {
 }
 
 const RegistrationPage = () => {
-    const isAuth = useSelector<AppRootStateType, boolean>(state => state.registration.isRegister)
+    const isAuth = useSelector<RootStateType, boolean>(state => state.registration.isRegister)
     const dispatch = useDispatch();
 
 
