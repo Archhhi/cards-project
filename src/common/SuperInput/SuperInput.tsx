@@ -11,6 +11,7 @@ type SuperInputTextPropsType = DefaultInputPropsType & { // и + ещё проп
   onEnter?: () => void
   error?: string
   spanClassName?: string
+    type?: string
 }
 
 const SuperInput: React.FC<SuperInputTextPropsType> = (
@@ -50,7 +51,7 @@ const SuperInput: React.FC<SuperInputTextPropsType> = (
 
       {/*  {...restProps} // отдаём инпуту остальные пропсы если они есть (value например там внутри)*/}
       {/*/>*/}
-      <input type='text' className={s.input} placeholder={'Enter...'}/>
+      <input type={type} className={s.input}/>
       {error && <span>{error}</span>}
     </>
   )
