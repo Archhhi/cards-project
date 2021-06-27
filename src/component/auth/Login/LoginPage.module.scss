@@ -2,31 +2,96 @@
 
 .container {
   display: flex;
-  justify-content: center;
-}
-
-.loginBlock {
-  display: flex;
-  width: 500px;
-  padding: 40px 10px;
-  border-radius: 1em;
-  background-color: $bgSecondColor;
   flex-direction: column;
-  align-content: center;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  min-height: 95.7vh;
+  background: $bgColor;
 
-  h1,
-  h2 {
+  .loginBlock {
     display: flex;
-    margin: 0;
-    color: $textColor;
-    font-family: $titleFontFamily;
-    font-weight: normal;
-  }
-}
+    width: 413px;
+    height: 600px;
+    padding: 40px 10px;
+    border-radius: 8px;
+    background-color: $bgSecondColor;
+    flex-direction: column;
+    align-items: center;
 
-.labelText {
-  display: flex;
-  color: $textColor;
+    h1,
+    h2 {
+      display: flex;
+      margin: 0;
+      color: $textSecondColor;
+      font-size: 26px;
+      font-family: $titleFontFamily;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin-top: 32px;
+      font-size: 22px;
+    }
+
+    .formBlock {
+      display: flex;
+      width: 90%;
+      flex-direction: column;
+      align-items: center;
+
+      .inputBlock {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .labelText {
+        display: flex;
+        justify-items: flex-start;
+        color: $textColor;
+      }
+
+      .linkForgotPassword {
+        display: flex;
+        color: $textColor;
+      }
+
+      .span {
+        display: flex;
+        color: $textColor;
+      }
+
+      .linkSignUp {
+        display: flex;
+        color: $textColor;
+      }
+    }
+  }
+
+  .error {
+    position: fixed;
+    left: auto;
+    top: 90%;
+    padding: 10px 30px;
+    color: $textColor;
+    border-radius: 0.25em;
+    background-color: $errorColor;
+
+    -webkit-box-shadow: 0px 0px 21px 0px rgba(199,199,199,1);
+    -moz-box-shadow: 0px 0px 21px 0px rgba(199,199,199,1);
+    box-shadow: 0px 0px 21px 0px rgba(199,199,199,1);
+
+
+    .btnCloseError {
+      font-size: 25px;
+      font-family: $textFontFamily;
+      position: absolute;
+      bottom: 15px;
+      left: 192px;
+      color: $primaryColor;
+      cursor: pointer;
+    }
+  }
 }
