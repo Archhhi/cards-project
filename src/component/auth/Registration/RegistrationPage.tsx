@@ -1,12 +1,14 @@
 import {useFormik} from "formik";
-import React from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import SuperInput from "../../../common/SuperInput/SuperInput";
 import {registerTC} from "../../../redux/reducers/registrationReducer";
-import { RootStateType } from "../../../redux/store";
+import {RootStateType} from "../../../redux/store";
 import s from './RegistrationPage.module.scss'
+import eyeImg1 from './../../../common/img/eye1.png'
+import eyeImg from './../../../common/img/eye.jpg'
 
 type FormikErrorType = {
     email?: string
@@ -17,6 +19,7 @@ type FormikErrorType = {
 const RegistrationPage = () => {
     const isAuth = useSelector<RootStateType, boolean>(state => state.registration.isRegister)
     const dispatch = useDispatch();
+    const [activeInput, setActiveInput] = useState(0)
 
 
     const formik = useFormik({
@@ -64,44 +67,58 @@ const RegistrationPage = () => {
                 <p>Sign Up</p>
                 <div className={s.group}>
                     <input
+                        onClick={() => {
+                            setActiveInput(1)
+                        }}
                         type='email'
                         color={'black'}
                         {...formik.getFieldProps('email')}
                         onBlur={formik.handleBlur}
                     />
                     <span className={s.bar}/>
-                    <label>Email</label>
+                    <label  className={activeInput === 1 || formik.values.email ? `${s.active}` : ''}>Email</label>
                     {formik.touched.email && formik.errors.email &&
-                    <div style={{color: 'red'}}>{formik.errors.email}</div>}
-
+                    <div style={{color: 'red'}} className={s.error}>{formik.errors.email}</div>}
                 </div>
                 <div className={s.group}>
                     <input
+                        onClick={() => {
+                            setActiveInput(2)
+                        }}
                         type="password"
                         {...formik.getFieldProps('password')}
                         onBlur={formik.handleBlur}
 
                     />
                     <span className={s.bar}/>
-                    <label>Password</label>
+                    <label
+
+                        className={activeInput === 2 || formik.values.password ? `${s.active}` : ''}>Password</label>
                     {formik.touched.password && formik.errors.password &&
-                    <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                    <div style={{color: 'red'}} className={s.error}>{formik.errors.password}</div>}
+                    <img src={eyeImg1} alt="eye"/>
                 </div>
-                <div className={s.group}>
+                <div className={`${s.group} ${s.lastElement}`}>
                     <input
+                        onClick={() => {
+                            setActiveInput(3)
+                        }}
                         type="password"
                         {...formik.getFieldProps('confirmPassword')}
                         onBlur={formik.handleBlur}
                     />
                     <span className={s.bar}/>
-                    <label>Confirm password</label>
+                    <label
+
+                        className={activeInput === 3 || formik.values.confirmPassword ? `${s.active}` : ''}>Confirm password</label>
                     {formik.touched.confirmPassword && formik.errors.confirmPassword &&
-                    <div style={{color: 'red'}}>{formik.errors.confirmPassword}</div>}
+                    <div style={{color: 'red'}} className={s.error}>{formik.errors.confirmPassword}</div>}
+                    <img src={eyeImg1} alt="eye"/>
                 </div>
 
-                <div>
-                    <SuperButton type={'reset'}>Cancel</SuperButton>
-                    <SuperButton type={'submit'}>Login</SuperButton>
+                <div className={s.buttons}>
+                    <button type={'reset'}>Cancel</button>
+                    <button type={'submit'}>Register</button>
                 </div>
             </form>
         </div>
