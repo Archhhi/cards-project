@@ -9,7 +9,6 @@ type InitialStateType = typeof initialState
 export const registrationReducer = (state: InitialStateType = initialState, action: ActionsType) => {
     switch (action.type) {
         case 'login/SET-IS-REGISTER':
-            debugger
             return {...state, isRegister: action.value}
         default:
             return state

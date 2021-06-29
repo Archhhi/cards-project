@@ -1,4 +1,4 @@
-import {useFormik} from "formik";
+import {Field, Form, useFormik} from "formik";
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
@@ -9,6 +9,7 @@ import {RootStateType} from "../../../redux/store";
 import s from './RegistrationPage.module.scss'
 import eyeImg1 from './../../../common/img/eye1.png'
 import eyeImg from './../../../common/img/eye.jpg'
+import {log} from "util";
 
 type FormikErrorType = {
     email?: string
@@ -20,7 +21,7 @@ const RegistrationPage = () => {
     const isAuth = useSelector<RootStateType, boolean>(state => state.registration.isRegister)
     const dispatch = useDispatch();
     const [activeInput, setActiveInput] = useState(0)
-
+    const [showInputPasswordNumber, setShowInputPasswordNumber] = useState(0)
 
     const formik = useFormik({
         initialValues: {
@@ -28,6 +29,9 @@ const RegistrationPage = () => {
             password: '',
             confirmPassword: '',
             rememberMe: false
+        },
+        onReset: (values, onSubmitProps) => {
+            onSubmitProps.resetForm()
         },
         validate: (values) => {
             const errors: FormikErrorType = {};
@@ -52,12 +56,19 @@ const RegistrationPage = () => {
             // debugger
 
             dispatch(registerTC(values.email, values.password))
-            formik.resetForm()
+            // formik.resetForm()
+            onResetFunction()
         },
     })
 
     if (isAuth) {
         return <Redirect to='/login'/>
+    }
+    const onResetFunction = () => {
+        formik.setFieldValue("email", '')
+        formik.setFieldValue("password", '')
+        formik.setFieldValue("confirmPassword", '')
+        // formik.resetForm()
     }
 
     return (
@@ -65,6 +76,7 @@ const RegistrationPage = () => {
             <form onSubmit={formik.handleSubmit} className={s.form}>
                 <h5>It-incubator</h5>
                 <p>Sign Up</p>
+
                 <div className={s.group}>
                     <input
                         onClick={() => {
@@ -76,7 +88,7 @@ const RegistrationPage = () => {
                         onBlur={formik.handleBlur}
                     />
                     <span className={s.bar}/>
-                    <label  className={activeInput === 1 || formik.values.email ? `${s.active}` : ''}>Email</label>
+                    <label className={activeInput === 1 || formik.values.email ? `${s.active}` : ''}>Email</label>
                     {formik.touched.email && formik.errors.email &&
                     <div style={{color: 'red'}} className={s.error}>{formik.errors.email}</div>}
                 </div>
@@ -85,39 +97,54 @@ const RegistrationPage = () => {
                         onClick={() => {
                             setActiveInput(2)
                         }}
-                        type="password"
+                        type={showInputPasswordNumber === 1 ? 'text' : "password"}
                         {...formik.getFieldProps('password')}
                         onBlur={formik.handleBlur}
 
                     />
                     <span className={s.bar}/>
                     <label
-
                         className={activeInput === 2 || formik.values.password ? `${s.active}` : ''}>Password</label>
                     {formik.touched.password && formik.errors.password &&
                     <div style={{color: 'red'}} className={s.error}>{formik.errors.password}</div>}
-                    <img src={eyeImg1} alt="eye"/>
+                    <img src={eyeImg1}
+                         alt="eye"
+                         onMouseDown={() => {
+                             setShowInputPasswordNumber(1)
+                         }}
+                         onMouseUp={() => {
+                             setShowInputPasswordNumber(0)
+                         }}
+                    />
                 </div>
                 <div className={`${s.group} ${s.lastElement}`}>
                     <input
                         onClick={() => {
                             setActiveInput(3)
                         }}
-                        type="password"
+                        type={showInputPasswordNumber === 2 ? 'text' : "password"}
                         {...formik.getFieldProps('confirmPassword')}
                         onBlur={formik.handleBlur}
                     />
                     <span className={s.bar}/>
                     <label
 
-                        className={activeInput === 3 || formik.values.confirmPassword ? `${s.active}` : ''}>Confirm password</label>
+                        className={activeInput === 3 || formik.values.confirmPassword ? `${s.active}` : ''}>Confirm
+                        password</label>
                     {formik.touched.confirmPassword && formik.errors.confirmPassword &&
                     <div style={{color: 'red'}} className={s.error}>{formik.errors.confirmPassword}</div>}
-                    <img src={eyeImg1} alt="eye"/>
+                    <img src={eyeImg1} alt="eye"
+                         onMouseDown={() => {
+                             setShowInputPasswordNumber(2);
+                         }}
+                         onMouseUp={() => {
+                             setShowInputPasswordNumber(0);
+                         }}
+                    />
                 </div>
 
                 <div className={s.buttons}>
-                    <button type={'reset'}>Cancel</button>
+                    <button onClick={onResetFunction}>Cancel</button>
                     <button type={'submit'}>Register</button>
                 </div>
             </form>
