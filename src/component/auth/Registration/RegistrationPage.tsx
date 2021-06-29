@@ -30,9 +30,6 @@ const RegistrationPage = () => {
             confirmPassword: '',
             rememberMe: false
         },
-        onReset: (values, onSubmitProps) => {
-            onSubmitProps.resetForm()
-        },
         validate: (values) => {
             const errors: FormikErrorType = {};
             if (!values.email) {
@@ -54,10 +51,10 @@ const RegistrationPage = () => {
             // dispatch(loginTC(values.email, values.password))
             // console.log(JSON.stringify(values))
             // debugger
-
             dispatch(registerTC(values.email, values.password))
-            // formik.resetForm()
-            onResetFunction()
+            formik.resetForm()
+
+            // onResetFunction()
         },
     })
 
@@ -65,10 +62,11 @@ const RegistrationPage = () => {
         return <Redirect to='/login'/>
     }
     const onResetFunction = () => {
-        formik.setFieldValue("email", '')
-        formik.setFieldValue("password", '')
-        formik.setFieldValue("confirmPassword", '')
-        // formik.resetForm()
+        formik.resetForm()
+
+        // formik.setFieldValue("email", '')
+        // formik.setFieldValue("password", '')
+        // formik.setFieldValue("confirmPassword", '')
     }
 
     return (
