@@ -1,5 +1,5 @@
 import {Dispatch} from "redux"
-import {authApi} from "../../api/api"
+
 
 const initialState = {
     isRegister: false
