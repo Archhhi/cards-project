@@ -1,41 +1,54 @@
+@import '../../../common/styles/sass/variables';
+
 .registrationWrap {
   margin: 0 auto;
   text-align: center;
-  padding: 50px;
-  background: -webkit-linear-gradient(180deg, rgb(230, 212, 222), rgb(153, 145, 199));
-  background: -moz-linear-gradient(180deg, rgb(230, 212, 222), rgb(153, 145, 199));
-  background: linear-gradient(180deg, rgb(230, 212, 222), rgb(153, 145, 199));
+  padding: 50px 0;
+  background: $bgColor;
 
   .form {
     display: inline-block;
-    background-color: #F9F9FE;
+    background-color: $bgSecondColor;
     text-align: center;
-    padding: 20px;
+    padding: 25px;
     border-radius: 8px;
+    margin: 0 auto;
+    max-width: 413px;
 
     h5 {
+      font-family: $titleFontFamily;
       font-size: 26px;
+      line-height: 39px;
       font-weight: 600;
-      margin-bottom: 32px;
+      margin: 0 0 32px;
     }
 
     > p {
+      font-family: $titleFontFamily;
       font-size: 22px;
       font-weight: 600;
       margin-bottom: 39px;
+      line-height: 33px;
     }
 
     .group {
       position: relative;
       margin-bottom: 30px;
+      padding: 0 8px;
+
+      &.lastElement {
+        margin-bottom: 80px;
+      }
 
       input {
+        box-sizing: border-box;
         font-size: 16px;
         padding: 10px;
         display: block;
-        width: 300px;
+        width: 347px;
         border: none;
         border-bottom: 1px solid #ccc;
+        background-color: $bgSecondColor;
 
         &:focus {
           outline: none
@@ -43,6 +56,8 @@
       }
 
       label {
+        font-family: $textFontFamily;
+        font-weight: 400;
         color: #999;
         font-size: 18px;
         position: absolute;
@@ -52,21 +67,28 @@
         transition: 0.2s ease all;
         -moz-transition: 0.2s ease all;
         -webkit-transition: 0.2s ease all;
-      }
 
-      input {
-        &:focus ~ label,
-        &:valid ~ label {
+        &.active {
+          color: #24254A;
           top: -15px;
-          font-size: 14px;
-          color: #5264AE;
+          font-size: 13px;
+          line-height: 20px;
         }
       }
+
+      //input {
+      //  &:focus ~ label,
+      //  &:valid ~ label {
+      //    top: -15px;
+      //    font-size: 14px;
+      //    color: #5264AE;
+      //  }
+      //}
 
       .bar {
         position: relative;
         display: block;
-        width: 320px;
+        width: 100%;
 
         &:before,
         &:after {
@@ -93,6 +115,48 @@
       input:focus ~ .bar:before,
       input:focus ~ .bar:after {
         width: 50%;
+      }
+      .error{
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      >img {
+        cursor: pointer;
+        position: absolute;
+        height: 25px;
+        width: 25px;
+        right: 10px;
+        bottom: 3px;
+        opacity: 0.8;
+      }
+
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 35px;
+
+      button {
+        cursor: pointer;
+        font-family: $textFontFamily;
+        font-weight: 500;
+        line-height: 19px;
+        color: #21268F;
+        font-size: 16px;
+        padding: 9px 36px;
+        background-color: #D7D8EF;
+        border-radius: 30px;
+        border: none;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: #21268F;
+          box-shadow: 0px 4px 18px rgba(33, 38, 143, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
+          color: #ECECF9;
+        }
       }
     }
   }
