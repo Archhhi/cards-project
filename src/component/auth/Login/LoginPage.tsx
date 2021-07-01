@@ -30,7 +30,7 @@ const LoginPage = () => {
     },
   })
 
-  if(isAuth) return <Redirect to={'/profile'}/>
+  // if(isAuth) return <Redirect to={'/profile'}/>
 
   return (
     <div className={s.container}>
