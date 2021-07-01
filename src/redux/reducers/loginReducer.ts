@@ -8,8 +8,8 @@ export type RemoveError = ReturnType<typeof removeError>
 
 // All action types
 export type AuthActionTypes = SetAuthUserDataType
-| SetAuthUserError
-| RemoveError
+  | SetAuthUserError
+  | RemoveError
 
 // State type
 export type AuthStateType = typeof initialState
@@ -38,7 +38,7 @@ export const loginReducer = (state = initialState, action: AppActionTypes): Auth
     case "SET_AUTH_ERROR":
       return {
         ...state,
-        error: action.error
+        error: action.error,
       }
     case "REMOVE_ERROR":
       return {
@@ -73,7 +73,6 @@ export const login = (userEmail: string, password: string, rememberMe: boolean):
   return async (dispatch: AppDispatch) => {
     try {
       const response = await authAPI.login(userEmail, password, rememberMe)
-      console.log(response)
       const {_id, email, name, avatar, publicCardPacksCount} = response.data
       dispatch(setAuthUserData(_id, email, name, avatar, publicCardPacksCount, true))
     } catch (e) {
@@ -82,7 +81,25 @@ export const login = (userEmail: string, password: string, rememberMe: boolean):
         : (e.message + ', more details in the console')
       dispatch(setAuthError(error))
 
-      // console.log('Error: ', {...e})
+      setTimeout(() => {
+        dispatch(removeError())
+      }, 6000)
     }
+  }
+}
+export const getAuthUserData = (): ThunkActionType => async (dispatch: AppDispatch) => {
+  try {
+    const response = await authAPI.me()
+    const {_id, email, name, avatar, publicCardPacksCount} = response.data
+    dispatch(setAuthUserData(_id, email, name, avatar, publicCardPacksCount, true))
+  } catch (e) {
+    const error = e.response
+      ? e.response.data.error
+      : (e.message + ', more details in the console')
+    dispatch(setAuthError(error))
+
+    setTimeout(() => {
+      dispatch(removeError())
+    }, 6000)
   }
 }

@@ -1,15 +1,11 @@
-import {Field, Form, useFormik} from "formik";
+import {useFormik} from "formik";
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
-import SuperButton from "../../../common/SuperButton/SuperButton";
-import SuperInput from "../../../common/SuperInput/SuperInput";
 import {registerTC} from "../../../redux/reducers/registrationReducer";
 import {RootStateType} from "../../../redux/store";
 import s from './RegistrationPage.module.scss'
 import eyeImg1 from './../../../common/img/eye1.png'
-import eyeImg from './../../../common/img/eye.jpg'
-import {log} from "util";
 
 type FormikErrorType = {
     email?: string
@@ -51,10 +47,9 @@ const RegistrationPage = () => {
             // dispatch(loginTC(values.email, values.password))
             // console.log(JSON.stringify(values))
             // debugger
+
             dispatch(registerTC(values.email, values.password))
             formik.resetForm()
-
-            // onResetFunction()
         },
     })
 

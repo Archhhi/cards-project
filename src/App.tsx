@@ -20,6 +20,7 @@ function App() {
   return (
     <div className="App">
       <Header/>
+      <Route exact path={'/'} render={() => <Redirect to={'/profile'}/>}/>
       <Route path={'/login'} render={() => <LoginPage/>}/>
       <Route path={'/registration'} render={() => <RegistrationPage/>}/>
       <Route path={'/profile'} render={() => <ProfilePage/>}/>
