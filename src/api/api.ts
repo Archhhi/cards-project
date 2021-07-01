@@ -10,7 +10,7 @@ const instance = axios.create({
   withCredentials: true,
 })
 
-type RequestLoginPostType = {
+type ResponseLoginPostType = {
   _id: string
   email: string
   name: string
@@ -28,9 +28,12 @@ type RequestLoginPostType = {
 
 export const authAPI = {
   login(email: string, password: string, rememberMe: boolean) {
-    return instance.post<RequestLoginPostType>('auth/login', {email, password, rememberMe})
+    return instance.post<ResponseLoginPostType>('auth/login', {email, password, rememberMe})
   },
   auth(email: string, password: string) {
     return instance.post<AuthResponseType>('auth/register', {email, password})
-  }
+  },
+  me() {
+    return instance.post<ResponseLoginPostType>('auth/me', {})
+  },
 }

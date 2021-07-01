@@ -11,8 +11,8 @@
   .loginBlock {
     display: flex;
     width: 413px;
-    height: 600px;
-    padding: 40px 10px;
+    min-height: 600px;
+    padding: 30px 10px 40px 10px;
     border-radius: 8px;
     background-color: $bgSecondColor;
     flex-direction: column;
@@ -38,42 +38,89 @@
       display: flex;
       width: 90%;
       flex-direction: column;
-      align-items: center;
 
       .inputBlock {
         display: flex;
         width: 100%;
         flex-direction: column;
         align-items: flex-start;
+        margin-top: 38px;
       }
 
       .labelText {
         display: flex;
         justify-items: flex-start;
-        color: $textColor;
+        color: #24254A;
+        font-family: "Open Sans", sans-serif;
+        font-weight: normal;
+        font-size: 13px;
       }
 
       .linkForgotPassword {
         display: flex;
-        color: $textColor;
+        margin-top: 48px;
+        margin-right: 18px;
+        justify-content: flex-end;
+        text-decoration: none;
+        color: $textSecondColor;
+        font-family: "Open Sans", sans-serif;
+        font-size: 14px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .btnBlock {
+        display: flex;
+        margin-top: 92px;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
       }
 
       .span {
         display: flex;
-        color: $textColor;
+        justify-content: center;
+        margin-top: 31px;
+        font-family: "Open Sans", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        color: $textSecondColor;
+        opacity: 0.5;
       }
 
       .linkSignUp {
         display: flex;
-        color: $textColor;
+        justify-content: center;
+        margin-top: 11px;
+        color: $primaryColor;
+        font-family: "Open Sans", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
+    }
+
+    @media screen and (max-width: 455px) {
+      width: 85%;
+    }
+    @media screen and (max-height: 800px) {
+      margin: 30px 0;
     }
   }
 
   .error {
     position: fixed;
     left: auto;
-    top: 90%;
+    top: 92%;
     padding: 10px 30px;
     color: $textColor;
     border-radius: 0.25em;
@@ -82,16 +129,5 @@
     -webkit-box-shadow: 0px 0px 21px 0px rgba(199,199,199,1);
     -moz-box-shadow: 0px 0px 21px 0px rgba(199,199,199,1);
     box-shadow: 0px 0px 21px 0px rgba(199,199,199,1);
-
-
-    .btnCloseError {
-      font-size: 25px;
-      font-family: $textFontFamily;
-      position: absolute;
-      bottom: 15px;
-      left: 192px;
-      color: $primaryColor;
-      cursor: pointer;
-    }
   }
 }

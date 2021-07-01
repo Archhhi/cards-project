@@ -5,14 +5,14 @@ import s from "./LoginPage.module.scss";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import SuperInput from "../../../common/SuperInput/SuperInput";
 import SuperCheckbox from "../../../common/SuperCheckBox/SuperCheckBox";
-import {NavLink} from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {login, removeError} from "../../../redux/reducers/loginReducer";
+import {AuthStateType, login} from "../../../redux/reducers/loginReducer";
 import {RootStateType} from "../../../redux/store";
 
 const LoginPage = () => {
 
-  const error = useSelector<RootStateType, any>(state => state.login.error)
+  const {isAuth, error} = useSelector<RootStateType, AuthStateType>(state => state.login)
   const dispatch = useDispatch()
 
   const formik = useFormik({
@@ -30,9 +30,7 @@ const LoginPage = () => {
     },
   })
 
-  const onRemoveError = () => {
-    dispatch(removeError())
-  }
+  if(isAuth) return <Redirect to={'/profile'}/>
 
   return (
     <div className={s.container}>
@@ -42,7 +40,7 @@ const LoginPage = () => {
 
         <form onSubmit={formik.handleSubmit} className={s.formBlock}>
           <div className={s.inputBlock}>
-            <label htmlFor={'email'} className={s.labelText}>Email Address</label>
+            <label htmlFor={'email'} className={s.labelText}>Email</label>
             <SuperInput
               id={'email'}
               type={'email'}
@@ -74,15 +72,17 @@ const LoginPage = () => {
           />
 
           <NavLink to={'/recoveryNewPassword'} className={s.linkForgotPassword}>
-            <span>forgot password</span>
+            <span>Forgot Password</span>
           </NavLink>
 
-          <SuperButton
-            type={'submit'}
-            disabled={formik.isSubmitting}
-          >Login</SuperButton>
+          <div className={s.btnBlock}>
+            <SuperButton
+              type={'submit'}
+              disabled={formik.isSubmitting}
+            >Login</SuperButton>
+          </div>
 
-          <span className={s.span}>Don't have an account</span>
+          <span className={s.span}>Don't have an account?</span>
 
           <NavLink to={'/registration'} className={s.linkSignUp}>
             <span>Sign Up</span>
@@ -92,7 +92,6 @@ const LoginPage = () => {
 
       {error && <div className={s.error}>
         <span className={s.eText}>{error}</span>
-        <span className={s.btnCloseError} onClick={onRemoveError}>x</span>
       </div>}
 
     </div>
