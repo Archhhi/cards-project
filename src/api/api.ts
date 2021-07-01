@@ -1,4 +1,6 @@
 import axios from "axios";
+import {ForgotDataType} from "../redux/reducers/recoveryPasswordReducer";
+import {PasswordDataType} from "../redux/reducers/enterNewPasswordReducer";
 
 export type AuthResponseType = {
     addedUser: {}
@@ -6,7 +8,8 @@ export type AuthResponseType = {
 }
 
 const instance = axios.create({
-  baseURL: 'http://localhost:7542/2.0/',
+  // игната сервак, на локальном не работает, потом изменить, на нашем хироку
+  baseURL:"https://neko-back.herokuapp.com/2.0/",
   withCredentials: true,
 })
 
@@ -33,4 +36,12 @@ export const authAPI = {
   auth(email: string, password: string) {
     return instance.post<AuthResponseType>('auth/register', {email, password})
   }
+}
+
+export const forgotAPI = (data: ForgotDataType)=> {
+  return instance.post('auth/forgot', data);
+}
+
+export const setNewPasswordAPI = (password: PasswordDataType)=> {
+  return instance.post('auth/set-new-password', password);
 }

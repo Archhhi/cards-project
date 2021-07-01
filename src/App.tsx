@@ -9,6 +9,7 @@ import RecoverNewPassword from "./component/RecoverNewPassword/RecoverNewPasswor
 import EnterNewPassword from "./component/EnterNewPassword/EnterNewPassword";
 import {useSelector} from "react-redux";
 import {RootStateType} from "./redux/store";
+import EmailSent from "./component/RecoverNewPassword/EmailSent";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
       <Route path={'/profile'} render={() => <ProfilePage/>}/>
       <Route path={'/recoveryNewPassword'} render={() => <RecoverNewPassword/>}/>
       <Route path={'/enterNewPassword'} render={() => <EnterNewPassword/>}/>
+      <Route path={'/emailSent'} render={() => <EmailSent/>}/>
     </div>
   );
 }
