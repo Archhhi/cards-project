@@ -2,14 +2,13 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
 import {Redirect, useParams} from "react-router-dom";
-import {setNewPasswordAPI} from "../../api/api";
 import {changePasswordTC} from "../../redux/reducers/enterNewPasswordReducer";
-import {AppRootStateType} from "../../redux/store";
+import {RootStateType} from "../../redux/store";
 
 const EnterNewPassword = () => {
     const dispatch = useDispatch()
     const {token} = useParams<{ token: string }>();
-    const passwordChangedSuccess = useSelector<AppRootStateType, boolean | undefined>
+    const passwordChangedSuccess = useSelector<RootStateType, boolean | undefined>
     (state => state.enterNewPassword.passwordChangedSuccess)
 
     const formik = useFormik({

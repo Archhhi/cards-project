@@ -2,11 +2,11 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {forgotTC} from "../../redux/reducers/recoveryPasswordReducer";
 import {useFormik} from "formik";
-import {AppRootStateType} from "../../redux/store";
+import {RootStateType} from "../../redux/store";
 import { Redirect } from "react-router-dom";
 
 const RecoverNewPassword = () => {
-    const emailSent = useSelector<AppRootStateType, boolean | undefined>
+    const emailSent = useSelector<RootStateType, boolean | undefined>
     (state => state.recoveryPassword.emailSent)
     const dispatch = useDispatch()
     const formik = useFormik({

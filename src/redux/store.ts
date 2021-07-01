@@ -5,7 +5,6 @@ import {profileReducer} from "./reducers/profileReducer";
 import {registrationReducer} from "./reducers/registrationReducer";
 import {recoveryPasswordReducer} from "./reducers/recoveryPasswordReducer";
 import {enterNewPasswordReducer} from "./reducers/enterNewPasswordReducer";
-import {appReducer} from "./reducers/appReducer";
 
 let reducers = combineReducers({
   login: loginReducer,
@@ -13,7 +12,6 @@ let reducers = combineReducers({
   recoveryPassword: recoveryPasswordReducer,
   enterNewPassword: enterNewPasswordReducer,
   profile: profileReducer,
-  app: appReducer
 })
 
 // AppState type
