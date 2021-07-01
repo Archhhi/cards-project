@@ -5,18 +5,19 @@
   width: 100%;
   padding: 5px 0;
   border: none;
-  border-bottom: 1px solid $textColor;
+  border-bottom: 1px solid $textSecondColor;
   border-radius: 0.25em;
   outline: none;
-  background-color: transparent !important;
-  color: $textColor;
-  font-size: 14px;
+  background-color: transparent;
+  color: $textSecondColor;
+  font-size: 16px;
+  font-style: normal;
   font-family: $textFontFamily;
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus {
-    border: 1px solid $textColor;
-    -webkit-text-fill-color: $textColor;
+    border-bottom: 1px solid $textSecondColor;
+    -webkit-text-fill-color: $textSecondColor;
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
     transition: background-color 5000s ease-in-out 0s;
   }
