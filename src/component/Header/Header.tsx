@@ -19,9 +19,9 @@ const Header = () => {
           <NavLink to={'recoveryNewPassword'}>
             <li>RecoveryNewPassword</li>
           </NavLink>
-          <NavLink to={'enterNewPassword'}>
+          {/*<NavLink to={'enterNewPassword'}>
             <li>EnterNewPassword</li>
-          </NavLink>
+          </NavLink>*/}
         </ul>
       </nav>
     </header>

@@ -1,16 +1,20 @@
 import React from "react";
-import {useDispatch} from "react-redux";
-import {ForgotTC} from "../../redux/reducers/recoveryPasswordReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {forgotTC} from "../../redux/reducers/recoveryPasswordReducer";
 import {useFormik} from "formik";
+import {AppRootStateType} from "../../redux/store";
+import { Redirect } from "react-router-dom";
 
 const RecoverNewPassword = () => {
+    const emailSent = useSelector<AppRootStateType, boolean | undefined>
+    (state => state.recoveryPassword.emailSent)
     const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {
             email: '',
             from: "test-front-admin <ai73a@yandex.by>",
             message: `<div style="background-color: lime; padding: 15px">
-            password recovery link:<a href='http://localhost:3000/#/set-new-password/$token$'>
+            password recovery link:<a href='http://localhost:3000/cards-project#/enterNewPassword/$token$'>
                 link</a>
                       </div>`
         },
@@ -25,13 +29,13 @@ const RecoverNewPassword = () => {
             return errors
         },
         onSubmit: values => {
-            dispatch(ForgotTC(values))
-            /*formik.resetForm();*/
+            dispatch(forgotTC(values))
+            formik.resetForm();
         },
     })
-    /*  if (isLoggedIn) {
-          return <Redirect to={'/'}/>
-      }*/
+      if (emailSent) {
+          return <Redirect to={'/emailSent'}/>
+      }
 
 
     return (
