@@ -11,7 +11,6 @@ import {AuthStateType, login} from "../../../redux/reducers/loginReducer";
 import {RootStateType} from "../../../redux/store";
 
 const LoginPage = () => {
-
   const {isAuth, error} = useSelector<RootStateType, AuthStateType>(state => state.login)
   const dispatch = useDispatch()
 
