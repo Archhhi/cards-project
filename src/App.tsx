@@ -20,7 +20,7 @@ function App() {
         <Route path='/login' render={() => <LoginPage/>}/>
         <Route path='/registration' render={() => <RegistrationPage/>}/>
         <Route path='/recoveryNewPassword' render={() => <RecoverNewPassword/>}/>
-        <Route path='/enterNewPassword' render={() => <EnterNewPassword/>}/>
+        <Route path='/enterNewPassword/:token' render={() => <EnterNewPassword/>}/>
         <Route path='/emailSent' render={() => <EmailSent/>}/>
       </Switch>
     </div>
