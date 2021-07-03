@@ -19,8 +19,8 @@ function App() {
       <Switch>
         <Route exact path='/' render={() => <WithAuthRedirect><Redirect to={'/profile'}/></WithAuthRedirect>}/>
         <Route path='/profile' render={() => <WithAuthRedirect><ProfilePage/></WithAuthRedirect>}/>
-        <Route path='/packs' render={() => <PacksList/>}/>
-        <Route path='/cards' render={() => <CardsList/>}/>
+        <Route path='/packs' render={() => <WithAuthRedirect><PacksList/></WithAuthRedirect>}/>
+        <Route path='/cards' render={() => <WithAuthRedirect><CardsList/></WithAuthRedirect>}/>
         <Route path='/login' render={() => <LoginPage/>}/>
         <Route path='/registration' render={() => <RegistrationPage/>}/>
         <Route path='/recoveryNewPassword' render={() => <RecoverNewPassword/>}/>

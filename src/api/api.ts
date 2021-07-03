@@ -1,6 +1,7 @@
 import axios from "axios";
 import {ForgotDataType} from "../redux/reducers/recoveryPasswordReducer";
 import {PasswordDataType} from "../redux/reducers/enterNewPasswordReducer";
+import {CardPacksType} from "../types/types";
 
 export type AuthResponseType = {
   addedUser: {}
@@ -9,7 +10,7 @@ export type AuthResponseType = {
 
 const instance = axios.create({
   // игната сервак, на локальном не работает, потом изменить, на нашем хироку
-  baseURL:"https://neko-back.herokuapp.com/2.0/",
+  baseURL:"http://localhost:7542/2.0/",
   withCredentials: true,
 })
 
@@ -27,6 +28,16 @@ type ResponseLoginPostType = {
   rememberMe: boolean
 
   error?: string
+}
+export type ResponsePacksGetType = {
+  cardPacks: CardPacksType[]
+  cardPacksTotalCount: number
+  maxCardsCount: number
+  minCardsCount: number
+  page: number
+  pageCount: number
+  token: string
+  tokenDeathTime: number
 }
 
 export const authAPI = {
@@ -47,4 +58,10 @@ export const forgotAPI = (data: ForgotDataType)=> {
 
 export const setNewPasswordAPI = (password: PasswordDataType)=> {
   return instance.post('auth/set-new-password', password);
+}
+
+export const cardsAPI = {
+  getPacks(page = 1, pageCount = 7) {
+    return instance.get<ResponsePacksGetType>(`cards/pack?page=${page}&pageCount=${pageCount}`)
+  }
 }
