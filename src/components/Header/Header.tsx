@@ -7,21 +7,27 @@ const Header = () => {
     <header className={s.header}>
       <nav className={s.nav}>
         <ul>
-          <NavLink to={'login'}>
+          <NavLink to={'/login'}>
             <li>Login</li>
           </NavLink>
-          <NavLink to={'registration'}>
+          <NavLink to={'/registration'}>
             <li>Registration</li>
           </NavLink>
-          <NavLink to={'profile'}>
+          <NavLink to={'/profile'}>
             <li>Profile</li>
           </NavLink>
-          <NavLink to={'recoveryNewPassword'}>
+          <NavLink to={'/packs'}>
+            <li>Packs</li>
+          </NavLink>
+          <NavLink to={'/cards'}>
+            <li>Cards</li>
+          </NavLink>
+          <NavLink to={'/recoveryNewPassword'}>
             <li>RecoveryNewPassword</li>
           </NavLink>
-          {/*<NavLink to={'enterNewPassword'}>
+          <NavLink to={'/enterNewPassword'}>
             <li>EnterNewPassword</li>
-          </NavLink>*/}
+          </NavLink>
         </ul>
       </nav>
     </header>

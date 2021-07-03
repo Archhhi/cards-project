@@ -1,14 +1,16 @@
 import React from 'react';
 import './App.css';
-import Header from "./component/Header/Header";
+import Header from "./components/Header/Header";
 import {Route, Redirect, Switch} from "react-router-dom";
-import LoginPage from "./component/auth/Login/LoginPage";
-import RegistrationPage from "./component/auth/Registration/RegistrationPage";
-import ProfilePage from "./component/Profile/ProfilePage";
-import RecoverNewPassword from "./component/RecoverNewPassword/RecoverNewPassword";
-import EnterNewPassword from "./component/EnterNewPassword/EnterNewPassword";
-import EmailSent from "./component/RecoverNewPassword/EmailSent";
+import LoginPage from "./components/auth/Login/LoginPage";
+import RegistrationPage from "./components/auth/Registration/RegistrationPage";
+import ProfilePage from "./components/Profile/ProfilePage";
+import RecoverNewPassword from "./components/RecoverNewPassword/RecoverNewPassword";
+import EnterNewPassword from "./components/EnterNewPassword/EnterNewPassword";
+import EmailSent from "./components/RecoverNewPassword/EmailSent";
 import WithAuthRedirect from "./hoc/withAuthRedirect";
+import PacksList from "./components/PacksList/PacksList";
+import CardsList from "./components/CardsList/CardsList";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
       <Switch>
         <Route exact path='/' render={() => <WithAuthRedirect><Redirect to={'/profile'}/></WithAuthRedirect>}/>
         <Route path='/profile' render={() => <WithAuthRedirect><ProfilePage/></WithAuthRedirect>}/>
+        <Route path='/packs' render={() => <PacksList/>}/>
+        <Route path='/cards' render={() => <CardsList/>}/>
         <Route path='/login' render={() => <LoginPage/>}/>
         <Route path='/registration' render={() => <RegistrationPage/>}/>
         <Route path='/recoveryNewPassword' render={() => <RecoverNewPassword/>}/>
