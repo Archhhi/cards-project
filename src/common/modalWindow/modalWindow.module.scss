@@ -1,0 +1,12 @@
+@import '../../common/styles/sass/variables';
+
+.modalWindow {
+  display: flex;
+  align-self: center;
+  position: absolute;
+  z-index: 100;
+  top: 30vh;
+  width: 400px;
+  height: 300px;
+  background-color: $bgSecondColor;
+}

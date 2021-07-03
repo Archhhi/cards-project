@@ -6,7 +6,7 @@ import {removeError, setAuthError} from "./loginReducer";
 // Action creators type
 
 // All action types
-export type PacksActionTypes = ReturnType<typeof getPacksAC>
+export type PacksActionTypes = ReturnType<typeof setPacksAC>
 
 // State type
 export type PacksStateType = typeof initialState
@@ -26,7 +26,7 @@ const initialState = {
 // Reducer
 export const packsReducer = (state = initialState, action: AppActionTypes): PacksStateType => {
   switch (action.type) {
-    case 'GET_PACKS':
+    case 'SET_PACKS':
       return {
         ...state,
         ...action.payload
@@ -37,9 +37,9 @@ export const packsReducer = (state = initialState, action: AppActionTypes): Pack
 }
 
 // Action creators
-export const getPacksAC = (data: ResponsePacksGetType) => {
+export const setPacksAC = (data: ResponsePacksGetType) => {
   return {
-    type: 'GET_PACKS', payload: data
+    type: 'SET_PACKS', payload: data
   } as const
 }
 
@@ -47,16 +47,24 @@ export const getPacksAC = (data: ResponsePacksGetType) => {
 export const getPacksTC = (): ThunkActionType => async (dispatch: AppDispatch) => {
   try {
     const response = await cardsAPI.getPacks()
-    debugger
-    dispatch(getPacksAC(response.data))
+    dispatch(setPacksAC(response.data))
   } catch (e) {
-    const error = e.response
-      ? e.response.data.error
-      : (e.message + ', more details in the console')
-    dispatch(setAuthError(error))
-
-    setTimeout(() => {
-      dispatch(removeError())
-    }, 6000)
+    console.log(JSON.stringify(e))
+  }
+}
+export const updatePacksTC = (_id: string, name: string): ThunkActionType => async (dispatch: AppDispatch) => {
+  try {
+    await cardsAPI.updatePacks(_id, name)
+    dispatch(getPacksTC())
+  } catch (e) {
+    console.log(JSON.stringify(e))
+  }
+}
+export const deletePacksTC = (_id: string): ThunkActionType => async (dispatch: AppDispatch) => {
+  try {
+    await cardsAPI.deletePacks(_id)
+    dispatch(getPacksTC())
+  } catch (e) {
+    console.log(JSON.stringify(e))
   }
 }

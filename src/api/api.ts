@@ -63,5 +63,11 @@ export const setNewPasswordAPI = (password: PasswordDataType)=> {
 export const cardsAPI = {
   getPacks(page = 1, pageCount = 7) {
     return instance.get<ResponsePacksGetType>(`cards/pack?page=${page}&pageCount=${pageCount}`)
+  },
+  updatePacks(id: string, name: string) {
+    return instance.put(`cards/pack?id=${id}&name=${name}`)
+  },
+  deletePacks(id: string) {
+    return instance.delete(`cards/pack?id=${id}`)
   }
 }

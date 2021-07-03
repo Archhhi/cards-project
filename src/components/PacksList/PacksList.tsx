@@ -1,23 +1,33 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import Table from "../../common/Table/Table"
 import s from './Packs.module.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "../../redux/store";
 import {CardPacksType} from "../../types/types";
-import {getPacksTC} from "../../redux/reducers/packsReducer";
+import {deletePacksTC, getPacksTC} from "../../redux/reducers/packsReducer";
 import {Redirect} from "react-router-dom";
+import ModalWindow from "../../common/modalWindow/modalWindow";
 
 const PacksList = () => {
   const dispatch = useDispatch()
   const cardPacks = useSelector<RootStateType, CardPacksType[]>(state => state.packs.cardPacks)
   const _id = useSelector<RootStateType, string | null>(state => state.login._id)
   const isAuth = useSelector<RootStateType, boolean>(state => state.login.isAuth)
+  const [isMode, setIsMode] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch(getPacksTC())
   }, [])
 
   if (!isAuth) return <Redirect to={'/login'}/>
+
+  const updatePacks = (_id: string) => {
+    setIsMode(true)
+    // dispatch(updatePacksTC(_id, name))
+  }
+  const deletePacks = (_id: string) => {
+    dispatch(deletePacksTC(_id))
+  }
 
   const rgxp = /\d{4}-\d{2}-\d{2}/
 
@@ -32,8 +42,8 @@ const PacksList = () => {
           {
             el.user_id === _id &&
             <>
-              <li>Edit</li>
-              <li>Delete</li>
+              <li onClick={() => updatePacks(el._id)}>Edit</li>
+              <li onClick={() => deletePacks(el._id)}>Delete</li>
             </>
           }
         </ul>
@@ -41,20 +51,19 @@ const PacksList = () => {
     )
   })
 
+  const arrTitle = ['Name', 'Cards', 'Last Updated', 'Created by', 'Actions']
+
   return (
-    <div className={s.container}>
+    <div className={`${s.container} ${isMode && s.activeModal}`}>
       <div className={s.packs}>
         <h1>Packs List</h1>
 
         <Table
-          name={'Name'}
-          cards={'Cards'}
-          updated={'Last Updated'}
-          created={'Created by'}
-          action={'Actions'}
+          arrTitle={arrTitle}
           packs={packs}
         />
       </div>
+      {isMode && <ModalWindow />}
     </div>
   )
 }
