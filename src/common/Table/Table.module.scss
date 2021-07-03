@@ -1,0 +1,29 @@
+@import '../../common/styles/sass/variables';
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 500px;
+  background-color: #000;
+
+  ul {
+    display: flex;
+  }
+
+  ul li {
+    display: flex;
+    justify-content: flex-start;
+    width: 200px;
+    list-style: none;
+    color: $textColor;
+  }
+
+  .packsList {
+    display: flex;
+    justify-content: flex-start;
+    min-width: 200px;
+    list-style: none;
+    color: $textColor;
+  }
+}

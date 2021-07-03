@@ -6,7 +6,7 @@ const CardsList = () => {
     <>
       <h1>Cards List</h1>
 
-      <Table />
+      {/*<Table />*/}
     </>
   )
 }
