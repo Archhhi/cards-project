@@ -47,6 +47,11 @@ const PacksList = () => {
         <h1>Packs List</h1>
 
         <Table
+          name={'Name'}
+          cards={'Cards'}
+          updated={'Last Updated'}
+          created={'Created by'}
+          action={'Actions'}
           packs={packs}
         />
       </div>

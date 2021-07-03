@@ -1,25 +1,29 @@
 import React from "react"
 import s from './Table.module.scss'
-import {CardPacksType} from "../../types/types";
 
 type PropsType = {
+  name: string
+  cards: string
+  updated: string
+  created: string
+  action: string
   packs: any
 }
 
-const Table: React.FC<PropsType> = ({packs}) => {
+const Table: React.FC<PropsType> = (props) => {
   return (
     <div className={s.table}>
       <div className={s.titleBlock}>
         <ul>
-          <li>Name</li>
-          <li>Cards</li>
-          <li>Last Updated</li>
-          <li>Created by</li>
-          <li>Actions</li>
+          <li>{props.name}</li>
+          <li>{props.cards}</li>
+          <li>{props.updated}</li>
+          <li>{props.created}</li>
+          <li>{props.action}</li>
         </ul>
       </div>
 
-      {packs}
+      {props.packs}
 
     </div>
   )
