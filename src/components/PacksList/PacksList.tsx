@@ -11,6 +11,7 @@ import {AuthStateType} from "../../redux/reducers/loginReducer";
 import SuperInput from "../../common/SuperInput/SuperInput";
 import SuperButton from "../../common/SuperButton/SuperButton";
 import stylesForButton from "../../common/styles/styles.module.scss";
+import {setCardsPackIdAC} from "../../redux/reducers/cardsReducer";
 
 const PacksList = () => {
 
@@ -22,12 +23,14 @@ const PacksList = () => {
   const [isModeDelete, setIsModeDelete] = useState<boolean>(false)
   const [modalText, setModalText] = useState<string>('')
   const [id, setID] = useState<string>('')
+  const [isRedirectCard, setIsRedirectCards] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch(getPacksTC())
   }, [])
 
   if (!isAuth) return <Redirect to={'/login'}/>
+  if (isRedirectCard) return <Redirect to={'/cards'}/>
 
   const activateModal = (_id: string, e: any, name: string) => {
     setID(_id)
@@ -53,13 +56,18 @@ const PacksList = () => {
     setIsModeDelete(false)
   }
 
+  const getCards = (_id: string) => {
+    dispatch(setCardsPackIdAC(_id))
+    setIsRedirectCards(true)
+  }
+
   const rgxp = /\d{4}-\d{2}-\d{2}/
 
   const packs = cardPacks.map(el => {
     return (
       <div className={s.packsList} key={el._id}>
         <ul>
-          <li>{el.name}</li>
+          <li onClick={() => getCards(el._id)}>{el.name}</li>
           <li>{el.cardsCount}</li>
           <li>{el.updated.toString().match(rgxp)}</li>
           <li>{el.created.toString().match(rgxp)}</li>
@@ -97,7 +105,6 @@ const PacksList = () => {
         isModeAdd &&
         <ModalWindow
             setIsMode={setIsModeAdd}
-            setModalInputText={setModalText}
             title={'Add new Pack'}
         >
           <SuperInput
@@ -118,7 +125,6 @@ const PacksList = () => {
         isModeEdit &&
         <ModalWindow
             setIsMode={setIsModeEdit}
-            setModalInputText={setModalText}
             title={'Edit Pack'}
         >
           <SuperInput
@@ -139,7 +145,6 @@ const PacksList = () => {
         isModeDelete &&
         <ModalWindow
             setIsMode={setIsModeDelete}
-            setModalInputText={setModalText}
             title={'Delete Pack'}
         >
           <p>

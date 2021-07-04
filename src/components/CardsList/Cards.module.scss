@@ -1,0 +1,25 @@
+@import '../../common/styles/sass/variables';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 95.7vh;
+  background: $bgColor;
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    width: 1150px;
+    min-height: 700px;
+    padding: 24px 54px;
+    background: $bgSecondColor;
+
+    h1 {
+      margin: 0;
+    }
+  }
+}
+.activeModal {
+  z-index: 10;
+  background: #2d2e46;
+}

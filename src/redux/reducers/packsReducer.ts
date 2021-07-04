@@ -3,9 +3,10 @@ import {CardPacksType} from "../../types/types";
 import {cardsAPI, ResponsePacksGetType} from "../../api/api";
 
 // Action creators type
+export type PacksActionType = ReturnType<typeof setPacksAC>
 
 // All action types
-export type PacksActionTypes = ReturnType<typeof setPacksAC>
+export type PacksActionTypes = PacksActionType
 
 // State type
 export type PacksStateType = typeof initialState
