@@ -1,7 +1,6 @@
 import {AppActionTypes, AppDispatch, ThunkActionType} from "../store";
 import {CardPacksType} from "../../types/types";
 import {cardsAPI, ResponsePacksGetType} from "../../api/api";
-import {removeError, setAuthError} from "./loginReducer";
 
 // Action creators type
 
@@ -52,17 +51,25 @@ export const getPacksTC = (): ThunkActionType => async (dispatch: AppDispatch) =
     console.log(JSON.stringify(e))
   }
 }
-export const updatePacksTC = (_id: string, name: string): ThunkActionType => async (dispatch: AppDispatch) => {
+export const addPackTC = (name: string): ThunkActionType => async (dispatch: AppDispatch) => {
   try {
-    await cardsAPI.updatePacks(_id, name)
+    await cardsAPI.addPack(name)
     dispatch(getPacksTC())
   } catch (e) {
     console.log(JSON.stringify(e))
   }
 }
-export const deletePacksTC = (_id: string): ThunkActionType => async (dispatch: AppDispatch) => {
+export const updatePackTC = (_id: string, name: string): ThunkActionType => async (dispatch: AppDispatch) => {
   try {
-    await cardsAPI.deletePacks(_id)
+    await cardsAPI.updatePack(_id, name)
+    dispatch(getPacksTC())
+  } catch (e) {
+    console.log(JSON.stringify(e))
+  }
+}
+export const deletePackTC = (_id: string): ThunkActionType => async (dispatch: AppDispatch) => {
+  try {
+    await cardsAPI.deletePack(_id)
     dispatch(getPacksTC())
   } catch (e) {
     console.log(JSON.stringify(e))

@@ -64,10 +64,13 @@ export const cardsAPI = {
   getPacks(page = 1, pageCount = 7) {
     return instance.get<ResponsePacksGetType>(`cards/pack?page=${page}&pageCount=${pageCount}`)
   },
-  updatePacks(id: string, name: string) {
-    return instance.put(`cards/pack?id=${id}&name=${name}`)
+  addPack(name: string) {
+    return instance.post(`cards/pack`, {cardsPack: {name}})
   },
-  deletePacks(id: string) {
+  updatePack(_id: string, name: string) {
+    return instance.put(`cards/pack`, {cardsPack: {_id, name}})
+  },
+  deletePack(id: string) {
     return instance.delete(`cards/pack?id=${id}`)
   }
 }

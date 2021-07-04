@@ -9,6 +9,7 @@ import {NavLink, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AuthStateType, login} from "../../../redux/reducers/loginReducer";
 import {RootStateType} from "../../../redux/store";
+import stylesForButton from "../../../common/styles/styles.module.scss";
 
 const LoginPage = () => {
   const {isAuth, error} = useSelector<RootStateType, AuthStateType>(state => state.login)
@@ -78,6 +79,7 @@ const LoginPage = () => {
             <SuperButton
               type={'submit'}
               disabled={formik.isSubmitting}
+              className={stylesForButton.loginBtn}
             >Login</SuperButton>
           </div>
 
