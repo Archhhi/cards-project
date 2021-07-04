@@ -15,6 +15,8 @@ type FormikErrorType = {
 
 const RegistrationPage = () => {
     const isAuth = useSelector<RootStateType, boolean>(state => state.registration.isRegister)
+    const error = useSelector<RootStateType, string>(state => state.registration.error)
+
     const dispatch = useDispatch();
     const [activeInput, setActiveInput] = useState(0)
     const [showInputPasswordNumber, setShowInputPasswordNumber] = useState(0)
@@ -135,6 +137,7 @@ const RegistrationPage = () => {
                          }}
                     />
                 </div>
+                {error && <div className={s.error}>{error}</div>}
 
                 <div className={s.buttons}>
                     <button onClick={onResetFunction}>Cancel</button>
