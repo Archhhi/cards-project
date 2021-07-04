@@ -14,6 +14,7 @@
     border-radius: 8px;
     margin: 0 auto;
     max-width: 413px;
+    position: relative;
 
     h5 {
       font-family: $titleFontFamily;
@@ -158,6 +159,14 @@
           color: #ECECF9;
         }
       }
+    }
+
+    .error{
+      position: absolute;
+      color: red;
+      bottom: 115px;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 }
