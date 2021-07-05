@@ -1,14 +1,18 @@
 import {AppActionTypes, AppDispatch, ThunkActionType} from "../store";
 import {CardsType} from "../../types/types";
 import {cardsAPI, ResponseCardsGetType} from "../../api/api";
-import {getPacksTC} from "./packsReducer";
 
 // Action creators type
 export type CardsActionType = ReturnType<typeof setCardsAC>
 export type CardsPackIDType = ReturnType<typeof setCardsPackIdAC>
+export type QuestionType = ReturnType<typeof setQuestion>
+export type AnswerType = ReturnType<typeof setAnswer>
 
 // All action types
-export type CardsActionTypes = CardsActionType | CardsPackIDType
+export type CardsActionTypes = CardsActionType
+  | CardsPackIDType
+  | QuestionType
+  | AnswerType
 
 // State type
 export type CardsStateType = typeof initialState
@@ -25,7 +29,11 @@ const initialState = {
   token: null as null | string,
   tokenDeathTime: null as null | number,
 
-  cardsPack_id: null as null | string
+  cardsPack_id: null as null | string,
+  packName: null as null | string,
+
+  question: '' as string,
+  answer: '' as string
 }
 
 // Reducer
@@ -36,10 +44,21 @@ export const cardsReducer = (state = initialState, action: AppActionTypes): Card
         ...state,
         ...action.payload
       }
-    case 'SET_CARDSPACKID':
+    case 'SET_CARDS_PACK_ID':
       return {
         ...state,
-        cardsPack_id: action._id
+        cardsPack_id: action._id,
+        packName: action.name
+      }
+    case 'SET_QUESTION':
+      return {
+        ...state,
+        question: action.question
+      }
+    case 'SET_ANSWER':
+      return {
+        ...state,
+        question: action.answer
       }
     default:
       return state
@@ -52,9 +71,19 @@ export const setCardsAC = (data: ResponseCardsGetType) => {
     type: 'SET_CARDS', payload: data
   } as const
 }
-export const setCardsPackIdAC = (_id: string) => {
+export const setCardsPackIdAC = (_id: string, name: string) => {
   return {
-    type: 'SET_CARDSPACKID', _id
+    type: 'SET_CARDS_PACK_ID', _id, name
+  } as const
+}
+export const setQuestion = (question: string) => {
+  return {
+    type: 'SET_QUESTION', question
+  } as const
+}
+export const setAnswer = (answer: string) => {
+  return {
+    type: 'SET_ANSWER', answer
   } as const
 }
 

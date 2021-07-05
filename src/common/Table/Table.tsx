@@ -1,9 +1,16 @@
 import React from "react"
 import s from './Table.module.scss'
+import Cards from "../../components/CardsList/Cards";
+import {CardPacksType, CardsType} from "../../types/types";
+import Packs from "../../components/PacksList/Packs";
 
 type PropsType = {
+  type: string
   arrTitle: string[]
-  packs?: any
+  packs?: CardPacksType[]
+  cards?: CardsType[]
+  _id: string | null
+  activateModal: any
 }
 
 const Table: React.FC<PropsType> = (props) => {
@@ -22,8 +29,12 @@ const Table: React.FC<PropsType> = (props) => {
         </ul>
       </div>
 
-      {props.packs && props.packs}
-      {}
+      {props.type === 'pack' &&
+        <Packs packs={props.packs} _id={props._id} activateModal={props.activateModal}/>
+      }
+      {props.type === 'card' &&
+        <Cards cards={props.cards} _id={props._id} activateModal={props.activateModal}/>
+      }
     </div>
   )
 }

@@ -1,168 +1,99 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import Table from "../../common/Table/Table"
 import s from './Packs.module.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {RootStateType} from "../../redux/store";
-import {CardPacksType} from "../../types/types";
-import {addPackTC, deletePackTC, getPacksTC, updatePackTC} from "../../redux/reducers/packsReducer";
-import {Redirect} from "react-router-dom";
-import ModalWindow from "../../common/ModalWindow/ModalWindow";
-import {AuthStateType} from "../../redux/reducers/loginReducer";
-import SuperInput from "../../common/SuperInput/SuperInput";
-import SuperButton from "../../common/SuperButton/SuperButton";
-import stylesForButton from "../../common/styles/styles.module.scss";
-import {setCardsPackIdAC} from "../../redux/reducers/cardsReducer";
+import {useDispatch, useSelector} from "react-redux"
+import {RootStateType} from "../../redux/store"
+import {
+  addPackTC,
+  deletePackTC,
+  getPacksTC,
+  PacksStateType, setId, setIsModeAdd, setIsModeDelete,
+  setIsModeEdit, setModalText,
+  updatePackTC
+} from "../../redux/reducers/packsReducer"
+import {Redirect} from "react-router-dom"
+import {AuthStateType} from "../../redux/reducers/loginReducer"
+import SuperButton from "../../common/SuperButton/SuperButton"
+import stylesForButton from "../../common/styles/styles.module.scss"
+import styles from '../../common/styles/ContainerForTopBlocks.module.scss'
+import AddNewPack from "./ModalWindow/AddNewPack";
+import EditPack from "./ModalWindow/EditPack";
+import DeletePack from "./ModalWindow/DeletePack";
 
-const PacksList = () => {
+const PacksList: React.FC = React.memo(() => {
 
   const dispatch = useDispatch()
-  const cardPacks = useSelector<RootStateType, CardPacksType[]>(state => state.packs.cardPacks)
+
+  const {
+    cardPacks,
+    isModeAdd,
+    isModeEdit,
+    isModeDelete,
+    modalText,
+    id
+  } = useSelector<RootStateType, PacksStateType>(state => state.packs)
   const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
-  const [isModeAdd, setIsModeAdd] = useState<boolean>(false)
-  const [isModeEdit, setIsModeEdit] = useState<boolean>(false)
-  const [isModeDelete, setIsModeDelete] = useState<boolean>(false)
-  const [modalText, setModalText] = useState<string>('')
-  const [id, setID] = useState<string>('')
-  const [isRedirectCard, setIsRedirectCards] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch(getPacksTC())
   }, [])
 
   if (!isAuth) return <Redirect to={'/login'}/>
-  if (isRedirectCard) return <Redirect to={'/cards'}/>
 
   const activateModal = (_id: string, e: any, name: string) => {
-    setID(_id)
-    if(e === 'Edit') {
-      setIsModeEdit(true)
-    } else if(e === 'Delete') {
-      setModalText(name)
-      setIsModeDelete(true)
-    } else if(e === 'Add new pack') {
-      setIsModeAdd(true)
+    dispatch(setId(_id))
+    if (e === 'Edit') {
+      dispatch(setIsModeEdit(true))
+    } else if (e === 'Delete') {
+      dispatch(setModalText(name))
+      dispatch(setIsModeDelete(true))
+    } else if (e === 'Add new pack') {
+      dispatch(setIsModeAdd(true))
     }
   }
   const addPack = () => {
     dispatch(addPackTC(modalText))
-    setIsModeAdd(false)
+    dispatch(setIsModeAdd(false))
   }
   const updatePack = (id: string) => {
     dispatch(updatePackTC(id, modalText))
-    setIsModeEdit(false)
+    dispatch(setIsModeEdit(false))
   }
   const deletePack = (_id: string) => {
     dispatch(deletePackTC(_id))
-    setIsModeDelete(false)
+    dispatch(setIsModeDelete(false))
   }
-
-  const getCards = (_id: string) => {
-    dispatch(setCardsPackIdAC(_id))
-    setIsRedirectCards(true)
-  }
-
-  const rgxp = /\d{4}-\d{2}-\d{2}/
-
-  const packs = cardPacks.map(el => {
-    return (
-      <div className={s.packsList} key={el._id}>
-        <ul>
-          <li onClick={() => getCards(el._id)}>{el.name}</li>
-          <li>{el.cardsCount}</li>
-          <li>{el.updated.toString().match(rgxp)}</li>
-          <li>{el.created.toString().match(rgxp)}</li>
-          {
-            el.user_id === _id &&
-            <>
-              <li onClick={(e) => activateModal(el._id, e.currentTarget.innerText, '')}>Edit</li>
-              <li onClick={(e) => activateModal(el._id, e.currentTarget.innerText, el.name)}>Delete</li>
-            </>
-          }
-        </ul>
-      </div>
-    )
-  })
 
   const arrTitle = ['Name', 'Cards', 'Last Updated', 'Created by', 'Actions']
 
   return (
     <div className={`${s.container} ${isModeEdit && s.activeModal}`}>
       <div className={s.packs}>
-        <h1>Packs List</h1>
+        <div className={styles.containerForTopBlocks}>
+          <h1>Packs List</h1>
 
-        <SuperButton
-          className={stylesForButton.loginBtn}
-          onClick={(e) => activateModal('', e.currentTarget.innerText, '')}
-        >Add new pack</SuperButton>
+          <SuperButton
+            className={stylesForButton.addBtn}
+            onClick={(e) => activateModal('', e.currentTarget.innerText, '')}
+          >Add new pack</SuperButton>
+        </div>
 
         <Table
+          type={'pack'}
           arrTitle={arrTitle}
-          packs={packs}
+          packs={cardPacks}
+          _id={_id}
+          activateModal={activateModal}
         />
       </div>
 
-      {
-        isModeAdd &&
-        <ModalWindow
-            setIsMode={setIsModeAdd}
-            title={'Add new Pack'}
-        >
-          <SuperInput
-              type={'text'}
-              onChangeText={setModalText}
-          />
-          <SuperButton
-              className={stylesForButton.buttonForModalCancel}
-              onClick={() => setIsModeAdd(false)}
-          >Cancel</SuperButton>
-          <SuperButton
-              className={stylesForButton.buttonForModalSave}
-              onClick={() => addPack()}
-          >Add</SuperButton>
-        </ModalWindow>
-      }
-      {
-        isModeEdit &&
-        <ModalWindow
-            setIsMode={setIsModeEdit}
-            title={'Edit Pack'}
-        >
-          <SuperInput
-              type={'text'}
-              onChangeText={setModalText}
-          />
-          <SuperButton
-              className={stylesForButton.buttonForModalCancel}
-              onClick={() => setIsModeEdit(false)}
-          >Cancel</SuperButton>
-          <SuperButton
-              className={stylesForButton.buttonForModalSave}
-              onClick={() => updatePack(id)}
-          >Save</SuperButton>
-        </ModalWindow>
-      }
-      {
-        isModeDelete &&
-        <ModalWindow
-            setIsMode={setIsModeDelete}
-            title={'Delete Pack'}
-        >
-          <p>
-            Do you really want to remove <b>PackName - {modalText}</b>?
-            All cards will be excluded from this course.
-          </p>
-          <SuperButton
-              className={stylesForButton.buttonForModalCancel}
-              onClick={() => setIsModeDelete(false)}
-          >Cancel</SuperButton>
-          <SuperButton
-              className={stylesForButton.buttonForModalSave}
-              onClick={() => deletePack(id)}
-          >Delete</SuperButton>
-        </ModalWindow>
-      }
+      {isModeAdd && <AddNewPack addPack={addPack}/>}
+
+      {isModeEdit && <EditPack id={id} updatePack={updatePack}/>}
+
+      {isModeDelete && <DeletePack id={id} modalText={modalText} deletePack={deletePack}/>}
     </div>
   )
-}
+})
 
 export default PacksList
