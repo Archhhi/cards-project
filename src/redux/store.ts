@@ -6,7 +6,7 @@ import {registrationReducer} from "./reducers/registrationReducer";
 import {recoveryPasswordReducer} from "./reducers/recoveryPasswordReducer";
 import {enterNewPasswordReducer} from "./reducers/enterNewPasswordReducer";
 import {PacksActionTypes, packsReducer} from "./reducers/packsReducer";
-import {cardsReducer} from "./reducers/cardsReducer";
+import {CardsActionTypes, cardsReducer} from "./reducers/cardsReducer";
 
 let reducers = combineReducers({
   login: loginReducer,
@@ -23,6 +23,7 @@ export type RootStateType = ReturnType<typeof reducers>
 // Actions types
 export type AppActionTypes = AuthActionTypes
 | PacksActionTypes
+| CardsActionTypes
 // Thunk action type
 export type ThunkActionType = ThunkAction<Promise<void>, RootStateType, unknown, AppActionTypes>
 // Thunk dispatch type

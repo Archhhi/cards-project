@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import Header from "./components/Header/Header";
 import {Route, Redirect, Switch} from "react-router-dom";
@@ -11,8 +11,16 @@ import EmailSent from "./components/RecoverNewPassword/EmailSent";
 import WithAuthRedirect from "./hoc/withAuthRedirect";
 import PacksList from "./components/PacksList/PacksList";
 import CardsList from "./components/CardsList/CardsList";
+import {useDispatch} from "react-redux";
+import {getAuthUserData} from "./redux/reducers/loginReducer";
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getAuthUserData())
+  },[])
+
   return (
     <div className="App">
       <Header/>

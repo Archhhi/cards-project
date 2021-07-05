@@ -1,5 +1,6 @@
 import React from "react"
 import s from './ModalWindow.module.scss'
+import {useDispatch} from "react-redux";
 
 type PropsType = {
   setIsMode: (isMode: boolean) => void
@@ -7,7 +8,7 @@ type PropsType = {
   title: string
 }
 
-const ModalWindow: React.FC<PropsType> = (
+const ModalWindow: React.FC<PropsType> = React.memo((
   {
     setIsMode,
     setModalInputText,
@@ -15,15 +16,18 @@ const ModalWindow: React.FC<PropsType> = (
     ...restProps
   }
 ) => {
+
+  const dispatch = useDispatch()
+
   return (
     <div id="myModal" className={s.modal}>
       <div className={s.modal_content}>
-        <span className={s.close} onClick={() => setIsMode(false)}>&times;</span>
+        <span className={s.close} onClick={() => dispatch(setIsMode(false))}>&times;</span>
         <span>{title}</span>
         {restProps.children}
       </div>
     </div>
   )
-}
+})
 
 export default ModalWindow

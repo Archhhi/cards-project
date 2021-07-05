@@ -1,7 +1,7 @@
 import axios from "axios";
 import {ForgotDataType} from "../redux/reducers/recoveryPasswordReducer";
 import {PasswordDataType} from "../redux/reducers/enterNewPasswordReducer";
-import {CardPacksType} from "../types/types";
+import {CardPacksType, CardsType} from "../types/types";
 
 export type AuthResponseType = {
   addedUser: {}
@@ -39,6 +39,17 @@ export type ResponsePacksGetType = {
   token: string
   tokenDeathTime: number
 }
+export type ResponseCardsGetType = {
+  cards: CardsType[]
+  cardsTotalCount: number
+  maxGrade: number
+  minGrade: number
+  page: number
+  pageCount: number
+  packUserId: string
+  token: string
+  tokenDeathTime: number
+}
 
 export const authAPI = {
   login(email: string, password: string, rememberMe: boolean) {
@@ -72,5 +83,18 @@ export const cardsAPI = {
   },
   deletePack(id: string) {
     return instance.delete(`cards/pack?id=${id}`)
-  }
+  },
+
+  getCards(_id: string) {
+    return instance.get<ResponseCardsGetType>(`cards/card?cardsPack_id=${_id}`)
+  },
+  addCard(cardsPack_id: string, question: string, answer: string) {
+    return instance.post<ResponseCardsGetType>(`cards/card`, {card: {cardsPack_id, question, answer}})
+  },
+  updateCard(_id: string, question: string) {
+    return instance.put(`cards/card`, {card: {_id, question}})
+  },
+  deleteCard(id: string) {
+    return instance.delete(`cards/card?id=${id}`)
+  },
 }
