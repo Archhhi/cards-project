@@ -1,6 +1,7 @@
 import React from "react"
 import s from "./Cards.module.scss";
 import {CardsType} from "../../types/types";
+import StarRating from "./StartRating";
 
 type PropsType = {
   cards?: CardsType[]
@@ -29,7 +30,7 @@ const Cards: React.FC<PropsType> = React.memo((
                 <li>{el.question}</li>
                 <li>{el.answer}</li>
                 <li>{el.updated.toString().match(rgxp)}</li>
-                <li>{el.grade}</li>
+                <li><StarRating grade={el.grade}/></li>
                 {
                   el.user_id === _id &&
                   <>

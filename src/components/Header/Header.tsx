@@ -1,15 +1,23 @@
 import React from "react";
 import s from "./Header.module.scss";
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateType} from "../../redux/store";
+import {logout} from "../../redux/reducers/loginReducer";
 
 const Header = () => {
+  const dispatch = useDispatch()
+  const isAuth = useSelector<RootStateType, boolean>(state => state.login.isAuth)
   return (
     <header className={s.header}>
       <nav className={s.nav}>
         <ul>
-          <NavLink to={'/login'}>
-            <li>Login</li>
-          </NavLink>
+          {!isAuth
+            ? <NavLink to={'/login'}>
+              <li>Login</li>
+            </NavLink>
+            : <li onClick={() => dispatch(logout())}>Logout</li>
+          }
           <NavLink to={'/registration'}>
             <li>Registration</li>
           </NavLink>

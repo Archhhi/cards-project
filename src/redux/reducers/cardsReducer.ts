@@ -1,4 +1,4 @@
-import {AppActionTypes, AppDispatch, ThunkActionType} from "../store";
+import {AppActionTypes, AppDispatch, RootStateType, ThunkActionType} from "../store";
 import {CardsType} from "../../types/types";
 import {cardsAPI, ResponseCardsGetType} from "../../api/api";
 
@@ -7,12 +7,14 @@ export type CardsActionType = ReturnType<typeof setCardsAC>
 export type CardsPackIDType = ReturnType<typeof setCardsPackIdAC>
 export type QuestionType = ReturnType<typeof setQuestion>
 export type AnswerType = ReturnType<typeof setAnswer>
+export type RandomNumberType = ReturnType<typeof setRandomNumber>
 
 // All action types
 export type CardsActionTypes = CardsActionType
   | CardsPackIDType
   | QuestionType
   | AnswerType
+  | RandomNumberType
 
 // State type
 export type CardsStateType = typeof initialState
@@ -33,7 +35,8 @@ const initialState = {
   packName: null as null | string,
 
   question: '' as string,
-  answer: '' as string
+  answer: '' as string,
+  grade: null as null | number
 }
 
 // Reducer
@@ -58,7 +61,12 @@ export const cardsReducer = (state = initialState, action: AppActionTypes): Card
     case 'SET_ANSWER':
       return {
         ...state,
-        question: action.answer
+        answer: action.answer
+      }
+    case 'SET_RANDOM_NUMBER':
+      return {
+        ...state,
+        grade: action.grade
       }
     default:
       return state
@@ -86,37 +94,48 @@ export const setAnswer = (answer: string) => {
     type: 'SET_ANSWER', answer
   } as const
 }
+export const setRandomNumber = (grade: number) => {
+  return {
+    type: 'SET_RANDOM_NUMBER', grade
+  } as const
+}
 
 // Thunk creators
-export const getCardsTC = (_id: string): ThunkActionType => async (dispatch: AppDispatch) => {
-  try {
-    const response = await cardsAPI.getCards(_id)
-    dispatch(setCardsAC(response.data))
-  } catch (e) {
-    console.log(JSON.stringify(e))
+export const getCardsTC = (_id: string): ThunkActionType =>
+  async (dispatch: AppDispatch) => {
+    try {
+      const response = await cardsAPI.getCards(_id)
+      dispatch(setCardsAC(response.data))
+    } catch (e) {
+      console.log(JSON.stringify(e))
+    }
   }
-}
-export const addCardTC = (cardsPack_id: string, question: string, answer: string): ThunkActionType => async (dispatch: AppDispatch) => {
-  try {
-    await cardsAPI.addCard(cardsPack_id, question, answer)
-    dispatch(getCardsTC(cardsPack_id))
-  } catch (e) {
-    console.log(JSON.stringify(e))
+export const addCardTC = (cardsPack_id: string, question: string, answer: string): ThunkActionType =>
+  async (dispatch: AppDispatch) => {
+    let rand = 1 - 0.5 + Math.random() * (5 - 1 + 1)
+    let grade = Math.round(rand)
+    try {
+      await cardsAPI.addCard(cardsPack_id, question, answer, grade)
+      dispatch(getCardsTC(cardsPack_id))
+    } catch (e) {
+      console.log(JSON.stringify(e))
+    }
   }
-}
-export const updateCardTC = (cardsPack_id: string, _id: string, question: string): ThunkActionType => async (dispatch: AppDispatch) => {
-  try {
-    await cardsAPI.updateCard(_id, question)
-    dispatch(getCardsTC(cardsPack_id))
-  } catch (e) {
-    console.log(JSON.stringify(e))
+export const updateCardTC = (cardsPack_id: string, _id: string, question: string): ThunkActionType =>
+  async (dispatch: AppDispatch) => {
+    try {
+      await cardsAPI.updateCard(_id, question)
+      dispatch(getCardsTC(cardsPack_id))
+    } catch (e) {
+      console.log(JSON.stringify(e))
+    }
   }
-}
-export const deleteCardTC = (cardsPack_id: string, _id: string): ThunkActionType => async (dispatch: AppDispatch, getState: any) => {
-  try {
-    await cardsAPI.deleteCard(_id)
-    dispatch(getCardsTC(cardsPack_id))
-  } catch (e) {
-    console.log(JSON.stringify(e))
+export const deleteCardTC = (cardsPack_id: string, _id: string): ThunkActionType =>
+  async (dispatch: AppDispatch) => {
+    try {
+      await cardsAPI.deleteCard(_id)
+      dispatch(getCardsTC(cardsPack_id))
+    } catch (e) {
+      console.log(JSON.stringify(e))
+    }
   }
-}

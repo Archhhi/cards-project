@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import Table from "../../common/Table/Table"
 import s from './Packs.module.scss'
 import {useDispatch, useSelector} from "react-redux"
@@ -33,6 +33,7 @@ const PacksList: React.FC = React.memo(() => {
     id
   } = useSelector<RootStateType, PacksStateType>(state => state.packs)
   const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
+  const [onMode, setOnMode] = useState(false)
 
   useEffect(() => {
     dispatch(getPacksTC())
@@ -40,7 +41,7 @@ const PacksList: React.FC = React.memo(() => {
 
   if (!isAuth) return <Redirect to={'/login'}/>
 
-  const activateModal = (_id: string, e: any, name: string) => {
+  const activateModal = (_id: string, e: string, name: string) => {
     dispatch(setId(_id))
     if (e === 'Edit') {
       dispatch(setIsModeEdit(true))
@@ -66,8 +67,34 @@ const PacksList: React.FC = React.memo(() => {
 
   const arrTitle = ['Name', 'Cards', 'Last Updated', 'Created by', 'Actions']
 
+  const myStyle = {
+    backgroundColor: onMode ? '#9A91C8' : '#FFFFFF'
+  }
+  const allStyle = {
+    backgroundColor: onMode ? '#FFFFFF' : '#9A91C8'
+  }
+
+  const onMyPacks = () => {
+    setOnMode(true)
+    dispatch(getPacksTC(_id))
+  }
+  const onAllPacks = () => {
+    setOnMode(false)
+    dispatch(getPacksTC())
+  }
+
   return (
-    <div className={`${s.container} ${isModeEdit && s.activeModal}`}>
+    <div className={s.container}>
+      <aside className={s.sidePanel}>
+        <div className={s.togglePacks}>
+          <span className={s.titleShow}>Show packs cards</span>
+          <div className={s.toggle}>
+            <span className={s.myPacks} style={myStyle} onClick={onMyPacks}>My</span>
+            <span className={s.allPacks} style={allStyle} onClick={onAllPacks}>All</span>
+          </div>
+        </div>
+      </aside>
+
       <div className={s.packs}>
         <div className={styles.containerForTopBlocks}>
           <h1>Packs List</h1>

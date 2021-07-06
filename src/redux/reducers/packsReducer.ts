@@ -110,9 +110,9 @@ export const setId = (id: string) => {
 }
 
 // Thunk creators
-export const getPacksTC = (): ThunkActionType => async (dispatch: AppDispatch) => {
+export const getPacksTC = (user_id?: string | null): ThunkActionType => async (dispatch: AppDispatch) => {
   try {
-    const response = await cardsAPI.getPacks()
+    const response = await cardsAPI.getPacks(user_id)
     dispatch(setPacksAC(response.data))
   } catch (e) {
     console.log(JSON.stringify(e))
