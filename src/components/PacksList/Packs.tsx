@@ -42,7 +42,7 @@ const Packs: React.FC<PropsType> = React.memo((
                 <li onClick={() => getCards(el._id, el.name)}>{el.name}</li>
                 <li>{el.cardsCount}</li>
                 <li>{el.updated.toString().match(rgxp)}</li>
-                <li>{el.created.toString().match(rgxp)}</li>
+                <li>{el.user_name}</li>
                 {
                   el.user_id === _id &&
                   <>

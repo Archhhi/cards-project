@@ -27,7 +27,7 @@ const DeleteCard: React.FC<PropsType> = React.memo((
       title={'Delete Pack'}
     >
       <p>
-        Do you really want to remove <b>PackName - {modalText}</b>?
+        Do you really want to remove <b>CardName - {modalText}</b>?
         All cards will be excluded from this course.
       </p>
       <SuperButton

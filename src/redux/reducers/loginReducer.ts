@@ -87,6 +87,23 @@ export const login = (userEmail: string, password: string, rememberMe: boolean):
     }
   }
 }
+export const logout = (): ThunkActionType => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await authAPI.logout()
+      dispatch(setAuthUserData(null, null, null, null, null,false))
+    } catch (e) {
+      const error = e.response
+        ? e.response.data.error
+        : (e.message + ', more details in the console')
+      dispatch(setAuthError(error))
+
+      setTimeout(() => {
+        dispatch(removeError())
+      }, 6000)
+    }
+  }
+}
 export const getAuthUserData = (): ThunkActionType => async (dispatch: AppDispatch) => {
   try {
     const response = await authAPI.me()

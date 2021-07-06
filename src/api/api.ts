@@ -9,7 +9,6 @@ export type AuthResponseType = {
 }
 
 const instance = axios.create({
-  // игната сервак, на локальном не работает, потом изменить, на нашем хироку
   baseURL:"http://localhost:7542/2.0/",
   withCredentials: true,
 })
@@ -61,6 +60,9 @@ export const authAPI = {
   me() {
     return instance.post<ResponseLoginPostType>('auth/me', {})
   },
+  logout() {
+    return instance.delete('auth/me', {})
+  },
 }
 
 export const forgotAPI = (data: ForgotDataType)=> {
@@ -72,8 +74,8 @@ export const setNewPasswordAPI = (password: PasswordDataType)=> {
 }
 
 export const cardsAPI = {
-  getPacks(page = 1, pageCount = 7) {
-    return instance.get<ResponsePacksGetType>(`cards/pack?page=${page}&pageCount=${pageCount}`)
+  getPacks(user_id?: string | null) {
+    return instance.get<ResponsePacksGetType>(`cards/pack`, {params: {page: 1, pageCount: 7, user_id}})
   },
   addPack(name: string) {
     return instance.post(`cards/pack`, {cardsPack: {name}})
@@ -85,11 +87,11 @@ export const cardsAPI = {
     return instance.delete(`cards/pack?id=${id}`)
   },
 
-  getCards(_id: string) {
-    return instance.get<ResponseCardsGetType>(`cards/card?cardsPack_id=${_id}`)
+  getCards(cardsPack_id: string, page = 1, pageCount = 7) {
+    return instance.get<ResponseCardsGetType>(`cards/card`, {params: {cardsPack_id, page, pageCount}})
   },
-  addCard(cardsPack_id: string, question: string, answer: string) {
-    return instance.post<ResponseCardsGetType>(`cards/card`, {card: {cardsPack_id, question, answer}})
+  addCard(cardsPack_id: string, question: string, answer: string, grade: number) {
+    return instance.post<ResponseCardsGetType>(`cards/card`, {card: {cardsPack_id, question, answer, grade}})
   },
   updateCard(_id: string, question: string) {
     return instance.put(`cards/card`, {card: {_id, question}})
