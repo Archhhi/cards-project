@@ -15,10 +15,10 @@ import {Redirect} from "react-router-dom"
 import {AuthStateType} from "../../redux/reducers/loginReducer"
 import SuperButton from "../../common/SuperButton/SuperButton"
 import stylesForButton from "../../common/styles/styles.module.scss"
-import styles from '../../common/styles/ContainerForTopBlocks.module.scss'
 import AddNewPack from "./ModalWindow/AddNewPack";
 import EditPack from "./ModalWindow/EditPack";
 import DeletePack from "./ModalWindow/DeletePack";
+import SuperInput from "../../common/SuperInput/SuperInput";
 
 const PacksList: React.FC = React.memo(() => {
 
@@ -96,13 +96,22 @@ const PacksList: React.FC = React.memo(() => {
       </aside>
 
       <div className={s.packs}>
-        <div className={styles.containerForTopBlocks}>
+        <div className={s.containerForTopBlock}>
           <h1>Packs List</h1>
 
-          <SuperButton
-            className={stylesForButton.addBtn}
-            onClick={(e) => activateModal('', e.currentTarget.innerText, '')}
-          >Add new pack</SuperButton>
+          <div className={s.containerForSearchAndBtn}>
+            <div className={s.searchPacks}>
+              <SuperInput
+                type={'text'}
+                placeholder={'Search...'}
+              />
+            </div>
+
+            <SuperButton
+              className={stylesForButton.addBtn}
+              onClick={(e) => activateModal('', e.currentTarget.innerText, '')}
+            >Add new pack</SuperButton>
+          </div>
         </div>
 
         <Table
