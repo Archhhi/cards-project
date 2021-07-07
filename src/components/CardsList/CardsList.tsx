@@ -76,7 +76,7 @@ const CardsList: React.FC = React.memo(() => {
   return (
     <div className={`${s.container} ${isModeEdit && s.activeModal}`}>
       <div className={s.cards}>
-        <div className={styles.containerForTopBlocks}>
+        <div className={s.containerForTopBlocks}>
           <NavLink to={'/packs'}>
             <div className={s.arrow}>
               <div/>

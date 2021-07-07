@@ -43,8 +43,20 @@
     padding: 24px 54px;
     background: $bgSecondColor;
 
-    h1 {
-      margin: 0;
+    .containerForTopBlock {
+      h1 {
+        margin: 0;
+      }
+
+      .containerForSearchAndBtn {
+        display: flex;
+        flex-direction: row;
+
+        .searchPacks {
+          display: flex;
+          width: 461px;
+        }
+      }
     }
   }
 }
