@@ -1,4 +1,4 @@
-import {AppActionTypes, AppDispatch, ThunkActionType} from "../store";
+import {AppActionTypes, AppDispatch, RootStateType, ThunkActionType} from "../store";
 import {CardPacksType} from "../../types/types";
 import {cardsAPI, ResponsePacksGetType} from "../../api/api";
 
@@ -9,6 +9,8 @@ export type SetIsModeEditType = ReturnType<typeof setIsModeEdit>
 export type SetIsModeDeleteType = ReturnType<typeof setIsModeDelete>
 export type SetIsModalTextType = ReturnType<typeof setModalText>
 export type SetIdType = ReturnType<typeof setId>
+export type SetOnModeType = ReturnType<typeof setOnMode>
+export type SetSearchInputValueType = ReturnType<typeof setSearchInputValue>
 
 // All action types
 export type PacksActionTypes = PacksActionType
@@ -17,6 +19,8 @@ export type PacksActionTypes = PacksActionType
   | SetIsModeDeleteType
   | SetIsModalTextType
   | SetIdType
+  | SetOnModeType
+  | SetSearchInputValueType
 
 // State type
 export type PacksStateType = typeof initialState
@@ -36,7 +40,9 @@ const initialState = {
   isModeEdit: false,
   isModeDelete: false,
   modalText: '' as string,
-  id: '' as string
+  id: '' as string,
+  onMode: 'pending' as string,
+  searchInputValue: '' as string
 }
 
 // Reducer
@@ -71,6 +77,16 @@ export const packsReducer = (state = initialState, action: AppActionTypes): Pack
       return {
         ...state,
         id: action.id
+      }
+    case 'SET_ON_MODE':
+      return {
+        ...state,
+        onMode: action.mode
+      }
+    case 'SET_SEARCH_INPUT_VALUE':
+      return {
+        ...state,
+        searchInputValue: action.value
       }
     default:
       return state
@@ -108,17 +124,30 @@ export const setId = (id: string) => {
     type: 'SET_ID', id
   } as const
 }
+export const setOnMode = (mode: string) => {
+  return {
+    type: 'SET_ON_MODE', mode
+  } as const
+}
+export const setSearchInputValue = (value: string) => {
+  return {
+    type: 'SET_SEARCH_INPUT_VALUE', value
+  } as const
+}
 
 // Thunk creators
-export const getPacksTC = (user_id?: string | null): ThunkActionType => async (dispatch: AppDispatch) => {
-  try {
-    const response = await cardsAPI.getPacks(user_id)
-    dispatch(setPacksAC(response.data))
-  } catch (e) {
-    console.log(JSON.stringify(e))
+export const getPacksTC = (user_id?: string | null): ThunkActionType =>
+  async (dispatch: AppDispatch, getState: () => RootStateType) => {
+  const state = getState().packs
+    try {
+      const response = await cardsAPI.getPacks(user_id, state.searchInputValue)
+      dispatch(setPacksAC(response.data))
+    } catch (e) {
+      console.log(JSON.stringify(e))
+    }
   }
-}
-export const addPackTC = (name: string): ThunkActionType => async (dispatch: AppDispatch) => {
+export const addPackTC = (name: string): ThunkActionType =>
+  async (dispatch: AppDispatch) => {
   try {
     await cardsAPI.addPack(name)
     dispatch(getPacksTC())
@@ -126,7 +155,8 @@ export const addPackTC = (name: string): ThunkActionType => async (dispatch: App
     console.log(JSON.stringify(e))
   }
 }
-export const updatePackTC = (_id: string, name: string): ThunkActionType => async (dispatch: AppDispatch) => {
+export const updatePackTC = (_id: string, name: string): ThunkActionType =>
+  async (dispatch: AppDispatch) => {
   try {
     await cardsAPI.updatePack(_id, name)
     dispatch(getPacksTC())
@@ -134,7 +164,8 @@ export const updatePackTC = (_id: string, name: string): ThunkActionType => asyn
     console.log(JSON.stringify(e))
   }
 }
-export const deletePackTC = (_id: string): ThunkActionType => async (dispatch: AppDispatch) => {
+export const deletePackTC = (_id: string): ThunkActionType =>
+  async (dispatch: AppDispatch) => {
   try {
     await cardsAPI.deletePack(_id)
     dispatch(getPacksTC())

@@ -8,6 +8,8 @@ export type CardsPackIDType = ReturnType<typeof setCardsPackIdAC>
 export type QuestionType = ReturnType<typeof setQuestion>
 export type AnswerType = ReturnType<typeof setAnswer>
 export type RandomNumberType = ReturnType<typeof setRandomNumber>
+export type SearchInputCardValueType = ReturnType<typeof setSearchInputCardValue>
+export type SetOnModeType = ReturnType<typeof setOnModeCards>
 
 // All action types
 export type CardsActionTypes = CardsActionType
@@ -15,6 +17,8 @@ export type CardsActionTypes = CardsActionType
   | QuestionType
   | AnswerType
   | RandomNumberType
+  | SearchInputCardValueType
+  | SetOnModeType
 
 // State type
 export type CardsStateType = typeof initialState
@@ -36,7 +40,9 @@ const initialState = {
 
   question: '' as string,
   answer: '' as string,
-  grade: null as null | number
+  grade: null as null | number,
+  searchInputCardValue: '' as string,
+  onMode: false
 }
 
 // Reducer
@@ -67,6 +73,16 @@ export const cardsReducer = (state = initialState, action: AppActionTypes): Card
       return {
         ...state,
         grade: action.grade
+      }
+    case 'SET_SEARCH_INPUT_CARD_VALUE':
+      return {
+        ...state,
+        searchInputCardValue: action.value
+      }
+    case 'SET_ON_MODE_CARDS':
+      return {
+        ...state,
+        onMode: action.mode
       }
     default:
       return state
@@ -99,12 +115,23 @@ export const setRandomNumber = (grade: number) => {
     type: 'SET_RANDOM_NUMBER', grade
   } as const
 }
+export const setSearchInputCardValue = (value: string) => {
+  return {
+    type: 'SET_SEARCH_INPUT_CARD_VALUE', value
+  } as const
+}
+export const setOnModeCards = (mode: boolean) => {
+  return {
+    type: 'SET_ON_MODE_CARDS', mode
+  } as const
+}
 
 // Thunk creators
-export const getCardsTC = (_id: string): ThunkActionType =>
-  async (dispatch: AppDispatch) => {
+export const getCardsTC = (_id?: string | null): ThunkActionType =>
+  async (dispatch: AppDispatch, getState: () => RootStateType) => {
+    const state = getState().cards
     try {
-      const response = await cardsAPI.getCards(_id)
+      const response = await cardsAPI.getCards(_id, null, null, state.searchInputCardValue)
       dispatch(setCardsAC(response.data))
     } catch (e) {
       console.log(JSON.stringify(e))

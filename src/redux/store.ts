@@ -7,6 +7,7 @@ import {recoveryPasswordReducer} from "./reducers/recoveryPasswordReducer";
 import {enterNewPasswordReducer} from "./reducers/enterNewPasswordReducer";
 import {PacksActionTypes, packsReducer} from "./reducers/packsReducer";
 import {CardsActionTypes, cardsReducer} from "./reducers/cardsReducer";
+import {appReducer, AppReducerActionTypes} from "./reducers/appReducer";
 
 let reducers = combineReducers({
   login: loginReducer,
@@ -15,7 +16,8 @@ let reducers = combineReducers({
   enterNewPassword: enterNewPasswordReducer,
   profile: profileReducer,
   packs: packsReducer,
-  cards: cardsReducer
+  cards: cardsReducer,
+  app: appReducer
 })
 
 // AppState type
@@ -24,6 +26,7 @@ export type RootStateType = ReturnType<typeof reducers>
 export type AppActionTypes = AuthActionTypes
 | PacksActionTypes
 | CardsActionTypes
+| AppReducerActionTypes
 // Thunk action type
 export type ThunkActionType = ThunkAction<Promise<void>, RootStateType, unknown, AppActionTypes>
 // Thunk dispatch type

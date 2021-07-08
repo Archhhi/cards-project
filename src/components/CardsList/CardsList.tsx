@@ -3,24 +3,29 @@ import Table from "../../common/Table/Table"
 import s from './Cards.module.scss'
 import {useDispatch, useSelector} from "react-redux"
 import {RootStateType} from "../../redux/store"
-import {NavLink, Redirect} from "react-router-dom"
-import ModalWindow from "../../common/ModalWindow/ModalWindow"
+import {NavLink, Redirect, useParams} from "react-router-dom"
 import {AuthStateType} from "../../redux/reducers/loginReducer"
-import SuperInput from "../../common/SuperInput/SuperInput"
 import SuperButton from "../../common/SuperButton/SuperButton"
 import stylesForButton from "../../common/styles/styles.module.scss"
 import {
   addCardTC,
   CardsStateType,
   deleteCardTC,
-  getCardsTC, setQuestion,
+  getCardsTC, setOnModeCards, setQuestion, setSearchInputCardValue,
   updateCardTC
 } from "../../redux/reducers/cardsReducer"
-import styles from '../../common/styles/ContainerForTopBlocks.module.scss'
-import {PacksStateType, setId, setIsModeAdd, setIsModeDelete, setIsModeEdit} from "../../redux/reducers/packsReducer";
+import {
+  PacksStateType,
+  setId,
+  setIsModeAdd,
+  setIsModeDelete,
+  setIsModeEdit
+} from "../../redux/reducers/packsReducer";
 import AddNewCard from "./ModalWindow/AddNewCard";
 import EditCard from "./ModalWindow/EditCard";
 import DeleteCard from "./ModalWindow/DeleteCard";
+import SuperInput from "../../common/SuperInput/SuperInput";
+import {debounce} from "../../utils/debounceFunc";
 
 const CardsList: React.FC = React.memo(() => {
 
@@ -28,34 +33,43 @@ const CardsList: React.FC = React.memo(() => {
 
   const {
     cards,
-    cardsPack_id,
     packName,
     question,
-    answer
+    answer,
+    searchInputCardValue,
+    onMode
   } = useSelector<RootStateType, CardsStateType>(state => state.cards)
   const {
     isModeAdd,
     isModeEdit,
     isModeDelete,
-    modalText,
-    id,
+    id
   } = useSelector<RootStateType, PacksStateType>(state => state.packs)
   const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
+  const {cardsPack_id}: any = useParams()
 
   useEffect(() => {
-    dispatch(getCardsTC(cardsPack_id!))
-  }, [])
+    cards.length === 0 && dispatch(getCardsTC(cardsPack_id!))
+  }, [cards])
+
+  useEffect(() => {
+    onMode && dispatch(getCardsTC(cardsPack_id))
+  }, [searchInputCardValue])
+
+  if(!onMode) {
+    dispatch(setOnModeCards(true))
+  }
 
   if (!isAuth) return <Redirect to={'/login'}/>
 
-  const activateModal = (_id: string, e: any, question: string) => {
+  const activateModal = (_id: string, event: string, question: string) => {
     dispatch(setId(_id))
-    if (e === 'Edit') {
+    if (event === 'Edit') {
       dispatch(setIsModeEdit(true))
-    } else if (e === 'Delete') {
+    } else if (event === 'Delete') {
       dispatch(setQuestion(question))
       dispatch(setIsModeDelete(true))
-    } else if (e === 'Add new card') {
+    } else if (event === 'Add new card') {
       dispatch(setIsModeAdd(true))
     }
   }
@@ -71,6 +85,12 @@ const CardsList: React.FC = React.memo(() => {
     dispatch(deleteCardTC(cardsPack_id!, _id))
     dispatch(setIsModeDelete(false))
   }
+
+  function onChange(value: string) {
+    dispatch(setSearchInputCardValue(value))
+  }
+  //@ts-ignore
+  onChange = debounce(onChange, 500)
 
   const arrTitle = ['Question', 'Answer', 'Last Updated', 'Grade', 'Actions']
   return (
@@ -91,6 +111,14 @@ const CardsList: React.FC = React.memo(() => {
           >Add new card</SuperButton>
         </div>
 
+        <div className={s.searchPacks}>
+          <SuperInput
+            type={'text'}
+            placeholder={'Search...'}
+            onChangeText={(value) => onChange(value)}
+          />
+        </div>
+
         <Table
           type={'card'}
           arrTitle={arrTitle}
@@ -101,7 +129,6 @@ const CardsList: React.FC = React.memo(() => {
       </div>
 
       {isModeAdd && <AddNewCard addCard={addCard}/>}
-
       {isModeEdit && <EditCard id={id} updateCard={updateCard}/>}
       {isModeDelete && <DeleteCard id={id} deleteCard={deleteCard}/>}
     </div>

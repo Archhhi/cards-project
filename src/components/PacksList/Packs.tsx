@@ -3,7 +3,8 @@ import React, {useState} from "react";
 import {CardPacksType} from "../../types/types";
 import {Redirect} from "react-router-dom";
 import {setCardsPackIdAC} from "../../redux/reducers/cardsReducer";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateType} from "../../redux/store";
 
 type PropsType = {
   packs?: CardPacksType[]
@@ -21,9 +22,10 @@ const Packs: React.FC<PropsType> = React.memo((
 ) => {
 
   const dispatch = useDispatch()
+  const cardsPack_id = useSelector<RootStateType, string | null>(state => state.cards.cardsPack_id)
   const [isRedirectCard, setIsRedirectCards] = useState<boolean>(false)
 
-  if (isRedirectCard) return <Redirect to={'/cards'}/>
+  if (isRedirectCard) return <Redirect to={`/cards/${cardsPack_id}`}/>
 
   const getCards = (_id: string, name: string) => {
     dispatch(setCardsPackIdAC(_id, name))

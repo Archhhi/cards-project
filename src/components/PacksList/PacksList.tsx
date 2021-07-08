@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import Table from "../../common/Table/Table"
 import s from './Packs.module.scss'
 import {useDispatch, useSelector} from "react-redux"
@@ -8,7 +8,7 @@ import {
   deletePackTC,
   getPacksTC,
   PacksStateType, setId, setIsModeAdd, setIsModeDelete,
-  setIsModeEdit, setModalText,
+  setIsModeEdit, setModalText, setOnMode, setSearchInputValue,
   updatePackTC
 } from "../../redux/reducers/packsReducer"
 import {Redirect} from "react-router-dom"
@@ -19,6 +19,7 @@ import AddNewPack from "./ModalWindow/AddNewPack";
 import EditPack from "./ModalWindow/EditPack";
 import DeletePack from "./ModalWindow/DeletePack";
 import SuperInput from "../../common/SuperInput/SuperInput";
+import {debounce} from "../../utils/debounceFunc";
 
 const PacksList: React.FC = React.memo(() => {
 
@@ -30,14 +31,27 @@ const PacksList: React.FC = React.memo(() => {
     isModeEdit,
     isModeDelete,
     modalText,
-    id
+    id,
+    onMode,
+    searchInputValue
   } = useSelector<RootStateType, PacksStateType>(state => state.packs)
   const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
-  const [onMode, setOnMode] = useState(false)
 
   useEffect(() => {
-    dispatch(getPacksTC())
-  }, [])
+    cardPacks.length === 0 && dispatch(getPacksTC())
+  }, [cardPacks])
+
+  useEffect(() => {
+    if (onMode === 'all') {
+      dispatch(getPacksTC())
+    } else if (onMode === 'my') {
+      dispatch(getPacksTC(_id))
+    }
+  }, [searchInputValue])
+
+  if (onMode === 'pending') {
+    dispatch(setOnMode('all'))
+  }
 
   if (!isAuth) return <Redirect to={'/login'}/>
 
@@ -65,32 +79,38 @@ const PacksList: React.FC = React.memo(() => {
     dispatch(setIsModeDelete(false))
   }
 
-  const arrTitle = ['Name', 'Cards', 'Last Updated', 'Created by', 'Actions']
-
   const myStyle = {
-    backgroundColor: onMode ? '#9A91C8' : '#FFFFFF'
+    backgroundColor: onMode === 'my' ? '#9A91C8' : '#FFFFFF'
   }
   const allStyle = {
-    backgroundColor: onMode ? '#FFFFFF' : '#9A91C8'
+    backgroundColor: onMode === 'all' || onMode === 'pending' ? '#9A91C8' : '#FFFFFF'
   }
 
   const onMyPacks = () => {
-    setOnMode(true)
+    dispatch(setOnMode('my'))
     dispatch(getPacksTC(_id))
   }
   const onAllPacks = () => {
-    setOnMode(false)
+    dispatch(setOnMode('all'))
     dispatch(getPacksTC())
   }
 
+  function onChange(value: string) {
+    dispatch(setSearchInputValue(value))
+  }
+
+  //@ts-ignore
+  onChange = debounce(onChange, 500)
+
+  const arrTitle = ['Name', 'Cards', 'Last Updated', 'Created by', 'Actions']
   return (
     <div className={s.container}>
       <aside className={s.sidePanel}>
         <div className={s.togglePacks}>
           <span className={s.titleShow}>Show packs cards</span>
           <div className={s.toggle}>
-            <span className={s.myPacks} style={myStyle} onClick={onMyPacks}>My</span>
-            <span className={s.allPacks} style={allStyle} onClick={onAllPacks}>All</span>
+            <span className={s.myPacks} style={myStyle} onClick={() => onMyPacks()}>My</span>
+            <span className={s.allPacks} style={allStyle} onClick={() => onAllPacks()}>All</span>
           </div>
         </div>
       </aside>
@@ -104,6 +124,7 @@ const PacksList: React.FC = React.memo(() => {
               <SuperInput
                 type={'text'}
                 placeholder={'Search...'}
+                onChangeText={(value) => onChange(value)}
               />
             </div>
 

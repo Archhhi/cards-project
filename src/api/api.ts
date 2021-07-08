@@ -74,8 +74,8 @@ export const setNewPasswordAPI = (password: PasswordDataType)=> {
 }
 
 export const cardsAPI = {
-  getPacks(user_id?: string | null) {
-    return instance.get<ResponsePacksGetType>(`cards/pack`, {params: {page: 1, pageCount: 7, user_id}})
+  getPacks(user_id?: string | null, packName?: string) {
+    return instance.get<ResponsePacksGetType>(`cards/pack`, {params: {page: 1, pageCount: 7, user_id, packName}})
   },
   addPack(name: string) {
     return instance.post(`cards/pack`, {cardsPack: {name}})
@@ -87,8 +87,8 @@ export const cardsAPI = {
     return instance.delete(`cards/pack?id=${id}`)
   },
 
-  getCards(cardsPack_id: string, page = 1, pageCount = 7) {
-    return instance.get<ResponseCardsGetType>(`cards/card`, {params: {cardsPack_id, page, pageCount}})
+  getCards(cardsPack_id?: string | null, page: number | null = 1, pageCount: number | null = 7, cardQuestion?: string) {
+    return instance.get<ResponseCardsGetType>(`cards/card`, {params: {cardsPack_id, page, pageCount, cardQuestion}})
   },
   addCard(cardsPack_id: string, question: string, answer: string, grade: number) {
     return instance.post<ResponseCardsGetType>(`cards/card`, {card: {cardsPack_id, question, answer, grade}})

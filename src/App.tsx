@@ -11,15 +11,20 @@ import EmailSent from "./components/RecoverNewPassword/EmailSent";
 import WithAuthRedirect from "./hoc/withAuthRedirect";
 import PacksList from "./components/PacksList/PacksList";
 import CardsList from "./components/CardsList/CardsList";
-import {useDispatch} from "react-redux";
-import {getAuthUserData} from "./redux/reducers/loginReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {initializingApp} from "./redux/reducers/appReducer";
+import {AppDispatch, RootStateType} from "./redux/store";
+import Preloader from "./common/Preloader/Preloader";
 
 function App() {
-  const dispatch = useDispatch()
+  const initializing = useSelector<RootStateType, boolean>(state => state.app.initializing)
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    dispatch(getAuthUserData())
-  },[])
+    dispatch(initializingApp())
+  }, [])
+
+  if(!initializing) return <Preloader/>
 
   return (
     <div className="App">
@@ -28,7 +33,7 @@ function App() {
         <Route exact path='/' render={() => <WithAuthRedirect><Redirect to={'/profile'}/></WithAuthRedirect>}/>
         <Route path='/profile' render={() => <WithAuthRedirect><ProfilePage/></WithAuthRedirect>}/>
         <Route path='/packs' render={() => <WithAuthRedirect><PacksList/></WithAuthRedirect>}/>
-        <Route path='/cards' render={() => <WithAuthRedirect><CardsList/></WithAuthRedirect>}/>
+        <Route path='/cards/:cardsPack_id' render={() => <WithAuthRedirect><CardsList/></WithAuthRedirect>}/>
         <Route path='/login' render={() => <LoginPage/>}/>
         <Route path='/registration' render={() => <RegistrationPage/>}/>
         <Route path='/recoveryNewPassword' render={() => <RecoverNewPassword/>}/>
