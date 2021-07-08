@@ -1,15 +1,15 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import Table from "../../common/Table/Table"
 import s from './Packs.module.scss'
 import {useDispatch, useSelector} from "react-redux"
 import {RootStateType} from "../../redux/store"
 import {
   addPackTC,
-  deletePackTC,
-  getPacksTC,
+  deletePackTC, getPacksByPageNumberTC,
+  getPacksTC, getSortedPacksTC,
   PacksStateType, setId, setIsModeAdd, setIsModeDelete,
-  setIsModeEdit, setModalText, setOnMode, setSearchInputValue,
-  updatePackTC
+  setIsModeEdit, setMinMaxCardsValues, setModalText,
+  updatePackTC, setOnMode, setSearchInputValue,
 } from "../../redux/reducers/packsReducer"
 import {Redirect} from "react-router-dom"
 import {AuthStateType} from "../../redux/reducers/loginReducer"
@@ -20,6 +20,14 @@ import EditPack from "./ModalWindow/EditPack";
 import DeletePack from "./ModalWindow/DeletePack";
 import SuperInput from "../../common/SuperInput/SuperInput";
 import {debounce} from "../../utils/debounceFunc";
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import Pagination from "../../common/Pagination/Pagination";
+
+const {createSliderWithTooltip} = Slider;
+const Range = createSliderWithTooltip(Slider.Range);
+const {Handle} = Slider;
+
 
 const PacksList: React.FC = React.memo(() => {
 
@@ -33,7 +41,14 @@ const PacksList: React.FC = React.memo(() => {
     modalText,
     id,
     onMode,
-    searchInputValue
+    searchInputValue,
+    page,
+    pageCount,
+    cardPacksTotalCount,
+    settedMinCardsValue,
+    settedMaxCardsValue,
+    maxCardsCount,
+    minCardsCount
   } = useSelector<RootStateType, PacksStateType>(state => state.packs)
   const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
 
@@ -52,6 +67,14 @@ const PacksList: React.FC = React.memo(() => {
   if (onMode === 'pending') {
     dispatch(setOnMode('all'))
   }
+
+  // useEffect(() => {
+  //     dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
+  // }, [])
+  // console.log("page= ", page,
+  //     "pageCount= ", pageCount,
+  //     "cardPacksTotalCount =", cardPacksTotalCount)
+  //
 
   if (!isAuth) return <Redirect to={'/login'}/>
 
@@ -80,10 +103,10 @@ const PacksList: React.FC = React.memo(() => {
   }
 
   const myStyle = {
-    backgroundColor: onMode === 'my' ? '#9A91C8' : '#FFFFFF'
+    backgroundColor: onMode ? '#9A91C8' : '#FFFFFF'
   }
   const allStyle = {
-    backgroundColor: onMode === 'all' || onMode === 'pending' ? '#9A91C8' : '#FFFFFF'
+    backgroundColor: onMode ? '#FFFFFF' : '#9A91C8'
   }
 
   const onMyPacks = () => {
@@ -94,6 +117,28 @@ const PacksList: React.FC = React.memo(() => {
     dispatch(setOnMode('all'))
     dispatch(getPacksTC())
   }
+  // const onMyPacks = () => {
+  //     setOnMode(true)
+  //     dispatch(getPacksTC(_id))
+  //     dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1], _id))
+  // }
+  // const onAllPacks = () => {
+  //     setOnMode(false)
+  //     dispatch(getPacksTC())
+  //     dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
+  // }
+  //
+  // const onInputValuesEntered = () => {
+  //     if (onMode){
+  //     dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1], _id))
+  //     } else {
+  //         dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
+  //     }
+  // }
+  //
+  // const paginate = (page: number) => {
+  //     dispatch(getPacksByPageNumberTC(page, settedMinCardsValue, settedMaxCardsValue,))
+  // }
 
   function onChange(value: string) {
     dispatch(setSearchInputValue(value))
@@ -111,6 +156,22 @@ const PacksList: React.FC = React.memo(() => {
           <div className={s.toggle}>
             <span className={s.myPacks} style={myStyle} onClick={() => onMyPacks()}>My</span>
             <span className={s.allPacks} style={allStyle} onClick={() => onAllPacks()}>All</span>
+          </div>
+        </div>
+
+        <div className={s.scrollWrap}>
+          <p>Filter by number of cards</p>
+          <div className={s.inputsWrap}>
+            <Range
+              tipFormatter={value => `${value} cards`}
+              onAfterChange={onInputValuesEntered}
+              allowCross={false}
+              min={minValueForRangeComponent}
+              max={maxValueForRangeComponent}
+              // defaultValue={[0, 20]}
+              onChange={setRangeValues}
+              value={rangeValues}
+            />
           </div>
         </div>
       </aside>
@@ -142,6 +203,12 @@ const PacksList: React.FC = React.memo(() => {
           _id={_id}
           activateModal={activateModal}
         />
+        <div className={s.paginationBlock}><Pagination
+          paginate={paginate}
+          page={page}
+          pageCount={pageCount}
+          cardPacksTotalCount={cardPacksTotalCount}/>
+        </div>
       </div>
 
       {isModeAdd && <AddNewPack addPack={addPack}/>}
