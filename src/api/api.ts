@@ -77,6 +77,12 @@ export const cardsAPI = {
   getPacks(user_id?: string | null) {
     return instance.get<ResponsePacksGetType>(`cards/pack`, {params: {page: 1, pageCount: 7, user_id}})
   },
+  getSortedPacks(min: number | null, max: number | null, user_id?: string | null) {
+    return instance.get<ResponsePacksGetType>(`cards/pack`, {params: {page: 1, pageCount: 7, user_id, min, max}})
+  },
+  getPaginatedPacks(page: number, min: number, max: number, user_id?: string | null) {
+    return instance.get<ResponsePacksGetType>(`cards/pack`, {params: {page, pageCount: 7, user_id, min, max}})
+  },
   addPack(name: string) {
     return instance.post(`cards/pack`, {cardsPack: {name}})
   },

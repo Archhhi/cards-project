@@ -15,9 +15,9 @@ type PropsType = {
 
 const Table: React.FC<PropsType> = (props) => {
 
-  let titles = [...props.arrTitle].map(t => {
+  let titles = [...props.arrTitle].map((t, index) => {
     return (
-      <li>{t}</li>
+      <li key={index}>{t}</li>
     )
   })
 
