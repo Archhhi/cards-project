@@ -1,18 +1,15 @@
 import s from './Pagination.module.scss'
 import React from "react";
-import {useDispatch} from "react-redux";
 
 
-type SuperButtonPropsType = {
+type PropsType = {
     page: number | null
     pageCount: number | null
     cardPacksTotalCount: number | null
     paginate: (page: number) => void
 }
 
-const Pagination: React.FC<SuperButtonPropsType> = (props) => {
-    const dispatch = useDispatch()
-
+const Pagination: React.FC<PropsType> = (props) => {
     let numberOfPages
     if (props.cardPacksTotalCount && props.pageCount) {
         numberOfPages = Math.ceil(props.cardPacksTotalCount / props.pageCount)

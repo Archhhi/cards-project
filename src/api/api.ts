@@ -96,6 +96,9 @@ export const cardsAPI = {
   getCards(cardsPack_id?: string | null, page: number | null = 1, pageCount: number | null = 7, cardQuestion?: string) {
     return instance.get<ResponseCardsGetType>(`cards/card`, {params: {cardsPack_id, page, pageCount, cardQuestion}})
   },
+  getCardsByPageNumber(page: number, cardsPack_id?: string | null, pageCount: number | null = 7, cardQuestion?: string) {
+    return instance.get<ResponseCardsGetType>(`cards/card`, {params: {cardsPack_id, page, pageCount, cardQuestion}})
+  },
   addCard(cardsPack_id: string, question: string, answer: string, grade: number) {
     return instance.post<ResponseCardsGetType>(`cards/card`, {card: {cardsPack_id, question, answer, grade}})
   },

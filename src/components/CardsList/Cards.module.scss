@@ -6,6 +6,7 @@
   height: 95.7vh;
   background: $bgColor;
 
+
   .cards {
     display: flex;
     flex-direction: column;
@@ -81,6 +82,12 @@
       h1 {
         margin: 0 20px 0 20px;
       }
+    }
+
+    .pagination {
+      margin-top: 10px;
+      max-width: 100%;
+      overflow: scroll;
     }
   }
 }

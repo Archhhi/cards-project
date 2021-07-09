@@ -6,9 +6,9 @@ import {RootStateType} from "../../redux/store"
 import {
   addPackTC,
   deletePackTC, getPacksByPageNumberTC,
-  getPacksTC, getSortedPacksTC,
+  getSortedPacksTC,
   PacksStateType, setId, setIsModeAdd, setIsModeDelete,
-  setIsModeEdit, setModalText,
+  setIsModeEdit, setModalText, setMinMaxCardsValues,
   updatePackTC, setOnMode, setSearchInputValue,
 } from "../../redux/reducers/packsReducer"
 import {Redirect} from "react-router-dom"
@@ -54,7 +54,7 @@ const PacksList: React.FC = React.memo(() => {
 
   useEffect(() => {
     // cardPacks.length === 0 && dispatch(getPacksTC())
-    cardPacks.length === 0 && dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
+    cardPacks.length === 0 && onMode === 'all' || onMode === 'pending' && dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
   }, [cardPacks])
 
   useEffect(() => {
@@ -127,7 +127,11 @@ const PacksList: React.FC = React.memo(() => {
   const maxValueForRangeComponent = maxCardsCount ? maxCardsCount : undefined
 
   const paginate = (page: number) => {
-    dispatch(getPacksByPageNumberTC(page, settedMinCardsValue, settedMaxCardsValue,))
+    if (onMode === 'all') {
+      dispatch(getPacksByPageNumberTC(page, settedMinCardsValue, settedMaxCardsValue))
+    } else if (onMode === 'my') {
+      dispatch(getPacksByPageNumberTC(page, settedMinCardsValue, settedMaxCardsValue, _id))
+    }
   }
 
   function onChange(value: string) {
@@ -193,13 +197,11 @@ const PacksList: React.FC = React.memo(() => {
           _id={_id}
           activateModal={activateModal}
         />
-
-        <div className={s.paginationBlock}>
-          <Pagination
-            paginate={paginate}
-            page={page}
-            pageCount={pageCount}
-            cardPacksTotalCount={cardPacksTotalCount}/>
+        <div className={s.paginationBlock}><Pagination
+          paginate={paginate}
+          page={page}
+          pageCount={pageCount}
+          cardPacksTotalCount={cardPacksTotalCount}/>
         </div>
       </div>
 
