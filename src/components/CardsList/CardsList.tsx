@@ -53,7 +53,7 @@ const CardsList: React.FC = React.memo(() => {
     const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
     const {cardsPack_id}: any = useParams()
     useEffect(() => {
-        cards.length === 0 && dispatch(getCardsTC(cardsPack_id!))
+        cards.length === 0 && dispatch(getCardsTC(cardsPack_id && cardsPack_id!))
     }, [cards])
 
     useEffect(() => {
