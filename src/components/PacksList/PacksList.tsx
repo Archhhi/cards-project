@@ -8,7 +8,7 @@ import {
   deletePackTC, getPacksByPageNumberTC,
   getPacksTC, getSortedPacksTC,
   PacksStateType, setId, setIsModeAdd, setIsModeDelete,
-  setIsModeEdit, setMinMaxCardsValues, setModalText,
+  setIsModeEdit, setModalText,
   updatePackTC, setOnMode, setSearchInputValue,
 } from "../../redux/reducers/packsReducer"
 import {Redirect} from "react-router-dom"
@@ -26,7 +26,6 @@ import Pagination from "../../common/Pagination/Pagination";
 
 const {createSliderWithTooltip} = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
-const {Handle} = Slider;
 
 
 const PacksList: React.FC = React.memo(() => {
@@ -194,11 +193,13 @@ const PacksList: React.FC = React.memo(() => {
           _id={_id}
           activateModal={activateModal}
         />
-        <div className={s.paginationBlock}><Pagination
-          paginate={paginate}
-          page={page}
-          pageCount={pageCount}
-          cardPacksTotalCount={cardPacksTotalCount}/>
+
+        <div className={s.paginationBlock}>
+          <Pagination
+            paginate={paginate}
+            page={page}
+            pageCount={pageCount}
+            cardPacksTotalCount={cardPacksTotalCount}/>
         </div>
       </div>
 

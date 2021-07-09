@@ -168,7 +168,7 @@ export const getSortedPacksTC = (min: number | null, max: number | null, user_id
     try {
       if ((min || min === 0) && max) {
         dispatch(setMinMaxCardsValues(min, max))
-        const response = await cardsAPI.getSortedPacks(min, max, user_id)
+        const response = await cardsAPI.getSortedPacks(min, max, user_id, state.searchInputValue)
         dispatch(setPacksAC(response.data))
       }
     } catch (e) {
