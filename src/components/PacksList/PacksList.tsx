@@ -106,12 +106,10 @@ const PacksList: React.FC = React.memo(() => {
 
   const onMyPacks = () => {
     dispatch(setOnMode('my'))
-    // dispatch(getPacksTC(_id))
     dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1], _id))
   }
   const onAllPacks = () => {
     dispatch(setOnMode('all'))
-    // dispatch(getPacksTC())
     dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
   }
 
@@ -197,11 +195,13 @@ const PacksList: React.FC = React.memo(() => {
           _id={_id}
           activateModal={activateModal}
         />
-        <div className={s.paginationBlock}><Pagination
-          paginate={paginate}
-          page={page}
-          pageCount={pageCount}
-          cardPacksTotalCount={cardPacksTotalCount}/>
+        <div className={s.paginationBlock}>
+          <Pagination
+            paginate={paginate}
+            page={page}
+            pageCount={pageCount}
+            cardPacksTotalCount={cardPacksTotalCount}
+          />
         </div>
       </div>
 
