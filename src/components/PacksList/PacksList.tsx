@@ -9,7 +9,7 @@ import {
   getSortedPacksTC,
   PacksStateType, setId, setIsModeAdd, setIsModeDelete,
   setIsModeEdit, setModalText,
-  updatePackTC, setOnMode, setSearchInputValue, setOnDisabled, setIsModeLearn,
+  updatePackTC, setOnMode, setSearchInputValue, setOnDisabled, setIsModeLearn, setIsModeShowAnswer,
 } from "../../redux/reducers/packsReducer"
 import {Redirect} from "react-router-dom"
 import {AuthStateType} from "../../redux/reducers/loginReducer"
@@ -25,6 +25,7 @@ import 'rc-slider/assets/index.css';
 import Pagination from "../../common/Pagination/Pagination";
 import LearnPack from "./ModalWindow/LearnPack";
 import {getCardsTC} from "../../redux/reducers/cardsReducer";
+import ShowAnswerPack from "./ModalWindow/ShowAnswerPack";
 
 const {createSliderWithTooltip} = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
@@ -40,6 +41,7 @@ const PacksList: React.FC = React.memo(() => {
     isModeEdit,
     isModeDelete,
     isModeLearn,
+    isModeShowAnswer,
     modalText,
     id,
     onMode,
@@ -107,8 +109,11 @@ const PacksList: React.FC = React.memo(() => {
     dispatch(setIsModeDelete(false))
   }
   const learnPack = (_id: string) => {
-    dispatch(deletePackTC(_id))
     dispatch(setIsModeLearn(false))
+    dispatch(setIsModeShowAnswer(true))
+  }
+  const showAnswer = (_id: string) => {
+    dispatch(setIsModeShowAnswer(false))
   }
 
   const myStyle = {
@@ -223,6 +228,7 @@ const PacksList: React.FC = React.memo(() => {
       {isModeEdit && <EditPack id={id} updatePack={updatePack}/>}
       {isModeDelete && <DeletePack id={id} modalText={modalText} deletePack={deletePack}/>}
       {isModeLearn && <LearnPack id={id} modalText={modalText} learnPack={learnPack}/>}
+      {isModeShowAnswer && <ShowAnswerPack id={id} modalText={modalText} showAnswer={showAnswer}/>}
     </div>
   )
 })

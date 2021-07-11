@@ -50,9 +50,9 @@ const Packs: React.FC<PropsType> = React.memo((
                   <>
                     <li onClick={(e) => activateModal(el._id, e.currentTarget.innerText, el.name)}>Delete</li>
                     <li onClick={(e) => activateModal(el._id, e.currentTarget.innerText, '')}>Edit</li>
-                    <li onClick={(e) => activateModal(el._id, e.currentTarget.innerText, el.name)}>Learn</li>
                   </>
                 }
+                <li onClick={(e) => activateModal(el._id, e.currentTarget.innerText, el.name)}>Learn</li>
               </ul>
             </div>
           )

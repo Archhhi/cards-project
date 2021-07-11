@@ -1,5 +1,5 @@
 import React from "react"
-import {setIsModeLearn, setOnDisabled} from "../../../redux/reducers/packsReducer";
+import {setIsModeLearn, setIsModeShowAnswer, setOnDisabled} from "../../../redux/reducers/packsReducer";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import stylesForButton from "../../../common/styles/styles.module.scss";
 import ModalWindow from "../../../common/ModalWindow/ModalWindow";
@@ -10,14 +10,14 @@ import {CardsType} from "../../../types/types";
 type PropsType = {
   id: string
   modalText: string
-  learnPack: (id: string) => void
+  showAnswer: (id: string) => void
 }
 
-const LearnPack: React.FC<PropsType> = React.memo((
+const ShowAnswerPack: React.FC<PropsType> = React.memo((
   {
     id,
     modalText,
-    learnPack
+    showAnswer
   }
 ) => {
 
@@ -25,35 +25,50 @@ const LearnPack: React.FC<PropsType> = React.memo((
   const cards = useSelector<RootStateType, CardsType[]>(state => state.cards.cards)
 
   const question = cards.find(card => card.cardsPack_id === id)?.question
+  const answer = cards.find(card => card.cardsPack_id === id)?.answer
 
   const closeModal = () => {
-    dispatch(setIsModeLearn(false))
+    dispatch(setIsModeShowAnswer(false))
     dispatch(setOnDisabled(false))
   }
 
-  const learnAndClose = (id: string) => {
-    learnPack(id)
+  const ShowAnswerAndClose = (id: string) => {
+    showAnswer(id)
     dispatch(setOnDisabled(false))
   }
 
   return (
     <ModalWindow
-      setIsMode={setIsModeLearn}
+      setIsMode={setIsModeShowAnswer}
       title={`Learn ${modalText}`}
     >
-      <p>
-        Question: "{question}"
-      </p>
+      <div>
+        <span>Question: "{question}"</span>
+        <span>Answer: "{answer}"</span>
+      </div>
+
+      <div>
+        <span>Rate yourself:</span>
+
+        <ul>
+          <li>Did not know</li>
+          <li>Forgot</li>
+          <li>A lot of thought</li>
+          <li>Confused</li>
+          <li>Knew the answer</li>
+        </ul>
+      </div>
+
       <SuperButton
         className={stylesForButton.buttonForModalCancel}
         onClick={() => closeModal()}
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}
-        onClick={() => learnAndClose(id)}
-      >Show answer</SuperButton>
+        onClick={() => ShowAnswerAndClose(id)}
+      >Next</SuperButton>
     </ModalWindow>
   )
 })
 
-export default LearnPack
+export default ShowAnswerPack

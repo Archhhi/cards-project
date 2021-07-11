@@ -8,6 +8,7 @@ export type SetIsModeAddType = ReturnType<typeof setIsModeAdd>
 export type SetIsModeEditType = ReturnType<typeof setIsModeEdit>
 export type SetIsModeDeleteType = ReturnType<typeof setIsModeDelete>
 export type SetIsModeLearnType = ReturnType<typeof setIsModeLearn>
+export type SetIsModeShowAnswerType = ReturnType<typeof setIsModeShowAnswer>
 export type SetIsModalTextType = ReturnType<typeof setModalText>
 export type SetMinMaxCardsValuesType = ReturnType<typeof setMinMaxCardsValues>
 export type SetIdType = ReturnType<typeof setId>
@@ -21,6 +22,7 @@ export type PacksActionTypes = PacksActionType
   | SetIsModeEditType
   | SetIsModeDeleteType
   | SetIsModeLearnType
+  | SetIsModeShowAnswerType
   | SetIsModalTextType
   | SetIdType
   | SetOnModeType
@@ -48,6 +50,7 @@ const initialState = {
   isModeEdit: false,
   isModeDelete: false,
   isModeLearn: false,
+  isModeShowAnswer: false,
   modalText: '' as string,
   id: '' as string,
   onMode: 'pending' as string,
@@ -82,6 +85,11 @@ export const packsReducer = (state = initialState, action: AppActionTypes): Pack
       return {
         ...state,
         isModeLearn: action.isMode
+      }
+    case 'SET_IS_MODE_SHOW_ANSWER':
+      return {
+        ...state,
+        isModeShowAnswer: action.isMode
       }
     case 'SET_MIN_MAX_CARDS_VALUES':
       return {
@@ -144,6 +152,11 @@ export const setIsModeDelete = (isMode: boolean) => {
 export const setIsModeLearn = (isMode: boolean) => {
   return {
     type: 'SET_IS_MODE_LEARN', isMode
+  } as const
+}
+export const setIsModeShowAnswer = (isMode: boolean) => {
+  return {
+    type: 'SET_IS_MODE_SHOW_ANSWER', isMode
   } as const
 }
 export const setMinMaxCardsValues = (settedMinCardsValue: number, settedMaxCardsValue: number) => {
