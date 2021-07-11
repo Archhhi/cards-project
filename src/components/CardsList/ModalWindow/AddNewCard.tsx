@@ -24,6 +24,11 @@ const AddNewCard: React.FC<PropsType> = React.memo((
     dispatch(setOnDisabled(false))
   }
 
+  const addAndClose = () => {
+    addCard()
+    dispatch(setOnDisabled(false))
+  }
+
   return (
     <ModalWindow
       setIsMode={setIsModeAdd}
@@ -43,7 +48,7 @@ const AddNewCard: React.FC<PropsType> = React.memo((
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}
-        onClick={() => addCard()}
+        onClick={() => addAndClose()}
       >Save</SuperButton>
     </ModalWindow>
   )

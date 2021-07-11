@@ -23,6 +23,11 @@ const AddNewPack: React.FC<PropsType> = React.memo((
     dispatch(setOnDisabled(false))
   }
 
+  const addAndClose = () => {
+    addPack()
+    dispatch(setOnDisabled(false))
+  }
+
   return (
     <ModalWindow
       setIsMode={setIsModeAdd}
@@ -38,7 +43,7 @@ const AddNewPack: React.FC<PropsType> = React.memo((
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}
-        onClick={() => addPack()}
+        onClick={() => addAndClose()}
       >Add</SuperButton>
     </ModalWindow>
   )

@@ -1,5 +1,5 @@
 import React from "react"
-import {setIsModeAdd, setIsModeDelete, setOnDisabled} from "../../../redux/reducers/packsReducer";
+import {setIsModeDelete, setOnDisabled} from "../../../redux/reducers/packsReducer";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import stylesForButton from "../../../common/styles/styles.module.scss";
 import ModalWindow from "../../../common/ModalWindow/ModalWindow";
@@ -19,10 +19,15 @@ const DeleteCard: React.FC<PropsType> = React.memo((
 ) => {
 
   const dispatch = useDispatch()
-  const modalText = useSelector<RootStateType, string>(state => state.packs.modalText)
+  const question = useSelector<RootStateType, string>(state => state.cards.question)
 
   const closeModal = () => {
     dispatch(setIsModeDelete(false))
+    dispatch(setOnDisabled(false))
+  }
+
+  const deleteAndClose = (id: string) => {
+    deleteCard(id)
     dispatch(setOnDisabled(false))
   }
 
@@ -32,7 +37,7 @@ const DeleteCard: React.FC<PropsType> = React.memo((
       title={'Delete Pack'}
     >
       <p>
-        Do you really want to remove <b>CardName - {modalText}</b>?
+        Do you really want to remove <b>CardName - {question}</b> ?
         All cards will be excluded from this course.
       </p>
       <SuperButton
@@ -41,7 +46,7 @@ const DeleteCard: React.FC<PropsType> = React.memo((
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}
-        onClick={() => deleteCard(id)}
+        onClick={() => deleteAndClose(id)}
       >Delete</SuperButton>
     </ModalWindow>
   )

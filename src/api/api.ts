@@ -78,6 +78,7 @@ export const setNewPasswordAPI = (password: PasswordDataType)=> {
 
 export const cardsAPI = {
   getPacks(user_id?: string | null, packName?: string) {
+    debugger
     return instance.get<ResponsePacksGetType>(`cards/pack`, {params: {page: 1, pageCount: 7, user_id, packName}})
   },
   getSortedPacks(min: number | null, max: number | null, user_id?: string | null, packName?: string) {
@@ -105,8 +106,8 @@ export const cardsAPI = {
   addCard(cardsPack_id: string, question: string, answer: string, grade: number) {
     return instance.post<ResponseCardsGetType>(`cards/card`, {card: {cardsPack_id, question, answer, grade}})
   },
-  updateCard(_id: string, question: string) {
-    return instance.put(`cards/card`, {card: {_id, question}})
+  updateCard(_id: string, question: string, answer: string) {
+    return instance.put(`cards/card`, {card: {_id, question, answer}})
   },
   deleteCard(id: string) {
     return instance.delete(`cards/card?id=${id}`)

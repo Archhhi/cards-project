@@ -1,11 +1,13 @@
-import React from "react"
-import {setIsModeDelete, setIsModeEdit, setModalText, setOnDisabled} from "../../../redux/reducers/packsReducer";
+import React, {useState} from "react"
+import {setIsModeEdit, setOnDisabled} from "../../../redux/reducers/packsReducer";
 import SuperInput from "../../../common/SuperInput/SuperInput";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import stylesForButton from "../../../common/styles/styles.module.scss";
 import ModalWindow from "../../../common/ModalWindow/ModalWindow";
-import {useDispatch} from "react-redux";
-import {setQuestion} from "../../../redux/reducers/cardsReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {setAnswer, setQuestion} from "../../../redux/reducers/cardsReducer";
+import {RootStateType} from "../../../redux/store";
+import {CardsType} from "../../../types/types";
 
 type PropsType = {
   id: string
@@ -20,9 +22,27 @@ const EditCard: React.FC<PropsType> = React.memo((
 ) => {
 
   const dispatch = useDispatch()
+  const cards = useSelector<RootStateType, CardsType[]>(state => state.cards.cards)
+
+  let [question, setQuestionL] = useState<any>(cards.find(card => card._id === id)?.question)
+  let [answer, setAnswerL] = useState<any>(cards.find(card => card._id === id)?.answer)
+
+  const changeInputQuestion = (text: string) => {
+    setQuestionL(text)
+    dispatch(setQuestion(question))
+  }
+  const changeInputAnswer = (text: string) => {
+    setAnswerL(text)
+    dispatch(setAnswer(answer))
+  }
 
   const closeModal = () => {
     dispatch(setIsModeEdit(false))
+    dispatch(setOnDisabled(false))
+  }
+
+  const saveAndClose = (id: string) => {
+    updateCard(id)
     dispatch(setOnDisabled(false))
   }
 
@@ -33,7 +53,13 @@ const EditCard: React.FC<PropsType> = React.memo((
     >
       <SuperInput
         type={'text'}
-        onChangeText={(text) => dispatch(setQuestion(text))}
+        value={question}
+        onChangeText={(text) => changeInputQuestion(text)}
+      />
+      <SuperInput
+        type={'text'}
+        value={answer}
+        onChangeText={(text) => changeInputAnswer(text)}
       />
       <SuperButton
         className={stylesForButton.buttonForModalCancel}
@@ -41,7 +67,7 @@ const EditCard: React.FC<PropsType> = React.memo((
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}
-        onClick={() => updateCard(id)}
+        onClick={() => saveAndClose(id)}
       >Save</SuperButton>
     </ModalWindow>
   )

@@ -48,8 +48,7 @@ const CardsList: React.FC = React.memo(() => {
     isModeAdd,
     isModeEdit,
     isModeDelete,
-    id,
-    onDisabled
+    id
   } = useSelector<RootStateType, PacksStateType>(state => state.packs)
   const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
   const {cardsPack_id}: any = useParams()
@@ -85,7 +84,7 @@ const CardsList: React.FC = React.memo(() => {
     dispatch(setIsModeAdd(false))
   }
   const updateCard = (id: string) => {
-    dispatch(updateCardTC(cardsPack_id!, id, question))
+    dispatch(updateCardTC(cardsPack_id!, id, question, answer))
     dispatch(setIsModeEdit(false))
   }
   const deleteCard = (_id: string) => {
@@ -138,9 +137,12 @@ const CardsList: React.FC = React.memo(() => {
           _id={_id}
           activateModal={activateModal}
         />
-        <div className={s.pagination}><Pagination page={page} pageCount={pageCount}
-                                                  cardPacksTotalCount={cardsTotalCount}
-                                                  paginate={paginate}/></div>
+        <div className={s.pagination}>
+          <Pagination page={page} pageCount={pageCount}
+                      cardPacksTotalCount={cardsTotalCount}
+                      paginate={paginate}
+          />
+        </div>
 
       </div>
 

@@ -204,29 +204,32 @@ export const getPacksByPageNumberTC = (
   }
 }
 export const addPackTC = (name: string): ThunkActionType =>
-  async (dispatch: AppDispatch) => {
+  async (dispatch: AppDispatch, getState: () => RootStateType) => {
+    const state = getState().login
     try {
       await cardsAPI.addPack(name)
-      dispatch(getPacksTC())
+      dispatch(getPacksTC(state._id))
     } catch (e) {
       console.log(JSON.stringify(e))
     }
   }
 export const updatePackTC = (_id: string, name: string): ThunkActionType =>
-  async (dispatch: AppDispatch) => {
-  try {
-    await cardsAPI.updatePack(_id, name)
-    dispatch(getPacksTC())
-  } catch (e) {
-    console.log(JSON.stringify(e))
+  async (dispatch: AppDispatch, getState: () => RootStateType) => {
+    const state = getState().login
+    try {
+      await cardsAPI.updatePack(_id, name)
+      dispatch(getPacksTC(state._id))
+    } catch (e) {
+      console.log(JSON.stringify(e))
+    }
   }
-}
 export const deletePackTC = (_id: string): ThunkActionType =>
-  async (dispatch: AppDispatch) => {
-  try {
-    await cardsAPI.deletePack(_id)
-    dispatch(getPacksTC())
-  } catch (e) {
-    console.log(JSON.stringify(e))
+  async (dispatch: AppDispatch, getState: () => RootStateType) => {
+    const state = getState().login
+    try {
+      await cardsAPI.deletePack(_id)
+      dispatch(getPacksTC(state._id))
+    } catch (e) {
+      console.log(JSON.stringify(e))
+    }
   }
-}

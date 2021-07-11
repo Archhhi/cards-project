@@ -26,6 +26,11 @@ const DeletePack: React.FC<PropsType> = React.memo((
     dispatch(setOnDisabled(false))
   }
 
+  const deleteAndClose = (id: string) => {
+    deletePack(id)
+    dispatch(setOnDisabled(false))
+  }
+
   return (
     <ModalWindow
       setIsMode={setIsModeDelete}
@@ -41,7 +46,7 @@ const DeletePack: React.FC<PropsType> = React.memo((
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}
-        onClick={() => deletePack(id)}
+        onClick={() => deleteAndClose(id)}
       >Delete</SuperButton>
     </ModalWindow>
   )

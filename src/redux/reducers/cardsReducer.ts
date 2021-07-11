@@ -51,7 +51,7 @@ export const cardsReducer = (state = initialState, action: AppActionTypes): Card
         case 'SET_CARDS':
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
             }
         case 'SET_CARDS_PACK_ID':
             return {
@@ -158,10 +158,10 @@ export const addCardTC = (cardsPack_id: string, question: string, answer: string
             console.log(JSON.stringify(e))
         }
     }
-export const updateCardTC = (cardsPack_id: string, _id: string, question: string): ThunkActionType =>
+export const updateCardTC = (cardsPack_id: string, _id: string, question: string, answer: string): ThunkActionType =>
     async (dispatch: AppDispatch) => {
         try {
-            await cardsAPI.updateCard(_id, question)
+            await cardsAPI.updateCard(_id, question, answer)
             dispatch(getCardsTC(cardsPack_id))
         } catch (e) {
             console.log(JSON.stringify(e))
