@@ -1,7 +1,7 @@
 import React from "react"
 import s from './ModalWindow.module.scss'
 import {useDispatch} from "react-redux";
-import {setIsModeAdd, setOnDisabled} from "../../redux/reducers/packsReducer";
+import {setOnDisabled} from "../../redux/reducers/packsReducer";
 
 type PropsType = {
   setIsMode: (isMode: boolean) => void

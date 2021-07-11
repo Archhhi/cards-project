@@ -8,8 +8,8 @@ import {
   deletePackTC, getPacksByPageNumberTC,
   getSortedPacksTC,
   PacksStateType, setId, setIsModeAdd, setIsModeDelete,
-  setIsModeEdit, setModalText, setMinMaxCardsValues,
-  updatePackTC, setOnMode, setSearchInputValue, setOnDisabled,
+  setIsModeEdit, setModalText,
+  updatePackTC, setOnMode, setSearchInputValue, setOnDisabled, setIsModeLearn,
 } from "../../redux/reducers/packsReducer"
 import {Redirect} from "react-router-dom"
 import {AuthStateType} from "../../redux/reducers/loginReducer"
@@ -23,6 +23,8 @@ import {debounce} from "../../utils/debounceFunc";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import Pagination from "../../common/Pagination/Pagination";
+import LearnPack from "./ModalWindow/LearnPack";
+import {getCardsTC} from "../../redux/reducers/cardsReducer";
 
 const {createSliderWithTooltip} = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
@@ -37,6 +39,7 @@ const PacksList: React.FC = React.memo(() => {
     isModeAdd,
     isModeEdit,
     isModeDelete,
+    isModeLearn,
     modalText,
     id,
     onMode,
@@ -64,6 +67,12 @@ const PacksList: React.FC = React.memo(() => {
     }
   }, [searchInputValue])
 
+  useEffect(() => {
+    if (isModeLearn) {
+      dispatch(getCardsTC(id))
+    }
+  }, [isModeLearn])
+
   if (onMode === 'pending') {
     dispatch(setOnMode('all'))
   }
@@ -80,6 +89,9 @@ const PacksList: React.FC = React.memo(() => {
       dispatch(setIsModeDelete(true))
     } else if (e === 'Add new pack') {
       dispatch(setIsModeAdd(true))
+    } else if (e === 'Learn') {
+      dispatch(setModalText(name))
+      dispatch(setIsModeLearn(true))
     }
   }
   const addPack = () => {
@@ -93,6 +105,10 @@ const PacksList: React.FC = React.memo(() => {
   const deletePack = (_id: string) => {
     dispatch(deletePackTC(_id))
     dispatch(setIsModeDelete(false))
+  }
+  const learnPack = (_id: string) => {
+    dispatch(deletePackTC(_id))
+    dispatch(setIsModeLearn(false))
   }
 
   const myStyle = {
@@ -204,10 +220,9 @@ const PacksList: React.FC = React.memo(() => {
       </div>
 
       {isModeAdd && <AddNewPack addPack={addPack}/>}
-
       {isModeEdit && <EditPack id={id} updatePack={updatePack}/>}
-
       {isModeDelete && <DeletePack id={id} modalText={modalText} deletePack={deletePack}/>}
+      {isModeLearn && <LearnPack id={id} modalText={modalText} learnPack={learnPack}/>}
     </div>
   )
 })
