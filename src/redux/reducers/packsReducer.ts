@@ -12,6 +12,7 @@ export type SetMinMaxCardsValuesType = ReturnType<typeof setMinMaxCardsValues>
 export type SetIdType = ReturnType<typeof setId>
 export type SetOnModeType = ReturnType<typeof setOnMode>
 export type SetSearchInputValueType = ReturnType<typeof setSearchInputValue>
+export type SetOnDisabledType = ReturnType<typeof setOnDisabled>
 
 // All action types
 export type PacksActionTypes = PacksActionType
@@ -23,6 +24,7 @@ export type PacksActionTypes = PacksActionType
   | SetOnModeType
   | SetSearchInputValueType
   | SetMinMaxCardsValuesType
+  | SetOnDisabledType
 
 // State type
 export type PacksStateType = typeof initialState
@@ -38,15 +40,16 @@ const initialState = {
   token: null as null | string,
   tokenDeathTime: null as null | number,
 
-  settedMinCardsValue: 5,
-  settedMaxCardsValue: 20,
+  settedMinCardsValue: 0,
+  settedMaxCardsValue: 103,
   isModeAdd: false,
   isModeEdit: false,
   isModeDelete: false,
   modalText: '' as string,
   id: '' as string,
   onMode: 'pending' as string,
-  searchInputValue: '' as string
+  searchInputValue: '' as string,
+  onDisabled: false
 }
 
 // Reducer
@@ -99,6 +102,11 @@ export const packsReducer = (state = initialState, action: AppActionTypes): Pack
         ...state,
         searchInputValue: action.value
       }
+    case 'SET_ON_DISABLED':
+      return {
+        ...state,
+        onDisabled: action.mode
+      }
     default:
       return state
   }
@@ -148,6 +156,11 @@ export const setOnMode = (mode: string) => {
 export const setSearchInputValue = (value: string) => {
   return {
     type: 'SET_SEARCH_INPUT_VALUE', value
+  } as const
+}
+export const setOnDisabled = (mode: boolean) => {
+  return {
+    type: 'SET_ON_DISABLED', mode
   } as const
 }
 

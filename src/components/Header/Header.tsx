@@ -5,11 +5,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "../../redux/store";
 import {logout} from "../../redux/reducers/loginReducer";
 
-const Header = () => {
+const Header = React.memo(() => {
   const dispatch = useDispatch()
   const isAuth = useSelector<RootStateType, boolean>(state => state.login.isAuth)
+  const onDisabled = useSelector<RootStateType, boolean>(state => state.packs.onDisabled)
+
+  const styleBGColor = onDisabled ? s.bgColorHeader : ''
+
   return (
-    <header className={s.header}>
+    <header className={s.header + ' ' + styleBGColor}>
       <nav className={s.nav}>
         <ul>
           {!isAuth
@@ -40,6 +44,6 @@ const Header = () => {
       </nav>
     </header>
   )
-}
+})
 
 export default Header

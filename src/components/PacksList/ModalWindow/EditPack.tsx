@@ -1,5 +1,5 @@
 import React from "react"
-import {setIsModeEdit, setModalText} from "../../../redux/reducers/packsReducer";
+import {setIsModeDelete, setIsModeEdit, setModalText, setOnDisabled} from "../../../redux/reducers/packsReducer";
 import SuperInput from "../../../common/SuperInput/SuperInput";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import stylesForButton from "../../../common/styles/styles.module.scss";
@@ -20,6 +20,11 @@ const EditPack: React.FC<PropsType> = React.memo((
 
   const dispatch = useDispatch()
 
+  const closeModal = () => {
+    dispatch(setIsModeEdit(false))
+    dispatch(setOnDisabled(false))
+  }
+
   return (
     <ModalWindow
       setIsMode={setIsModeEdit}
@@ -31,7 +36,7 @@ const EditPack: React.FC<PropsType> = React.memo((
       />
       <SuperButton
         className={stylesForButton.buttonForModalCancel}
-        onClick={() => dispatch(setIsModeEdit(false))}
+        onClick={() => closeModal()}
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}

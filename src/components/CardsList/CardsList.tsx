@@ -20,7 +20,7 @@ import {
   setId,
   setIsModeAdd,
   setIsModeDelete,
-  setIsModeEdit
+  setIsModeEdit, setOnDisabled
 } from "../../redux/reducers/packsReducer";
 import AddNewCard from "./ModalWindow/AddNewCard";
 import EditCard from "./ModalWindow/EditCard";
@@ -48,7 +48,8 @@ const CardsList: React.FC = React.memo(() => {
     isModeAdd,
     isModeEdit,
     isModeDelete,
-    id
+    id,
+    onDisabled
   } = useSelector<RootStateType, PacksStateType>(state => state.packs)
   const {_id, isAuth} = useSelector<RootStateType, AuthStateType>(state => state.login)
   const {cardsPack_id}: any = useParams()
@@ -69,6 +70,7 @@ const CardsList: React.FC = React.memo(() => {
 
   const activateModal = (_id: string, event: string, question: string) => {
     dispatch(setId(_id))
+    dispatch(setOnDisabled(true))
     if (event === 'Edit') {
       dispatch(setIsModeEdit(true))
     } else if (event === 'Delete') {

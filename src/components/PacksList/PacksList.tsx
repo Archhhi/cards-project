@@ -9,7 +9,7 @@ import {
   getSortedPacksTC,
   PacksStateType, setId, setIsModeAdd, setIsModeDelete,
   setIsModeEdit, setModalText, setMinMaxCardsValues,
-  updatePackTC, setOnMode, setSearchInputValue,
+  updatePackTC, setOnMode, setSearchInputValue, setOnDisabled,
 } from "../../redux/reducers/packsReducer"
 import {Redirect} from "react-router-dom"
 import {AuthStateType} from "../../redux/reducers/loginReducer"
@@ -53,16 +53,13 @@ const PacksList: React.FC = React.memo(() => {
   const [rangeValues, setRangeValues] = useState([settedMinCardsValue, settedMaxCardsValue])
 
   useEffect(() => {
-    // cardPacks.length === 0 && dispatch(getPacksTC())
     cardPacks.length === 0 && onMode === 'all' || onMode === 'pending' && dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
   }, [cardPacks])
 
   useEffect(() => {
     if (onMode === 'all') {
-      // dispatch(getPacksTC())
       dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1]))
     } else if (onMode === 'my') {
-      // dispatch(getPacksTC(_id))
       dispatch(getSortedPacksTC(rangeValues[0], rangeValues[1], _id))
     }
   }, [searchInputValue])
@@ -75,6 +72,7 @@ const PacksList: React.FC = React.memo(() => {
 
   const activateModal = (_id: string, e: string, name: string) => {
     dispatch(setId(_id))
+    dispatch(setOnDisabled(true))
     if (e === 'Edit') {
       dispatch(setIsModeEdit(true))
     } else if (e === 'Delete') {

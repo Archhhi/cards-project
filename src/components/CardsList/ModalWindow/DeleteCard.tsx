@@ -1,5 +1,5 @@
 import React from "react"
-import {setIsModeDelete} from "../../../redux/reducers/packsReducer";
+import {setIsModeAdd, setIsModeDelete, setOnDisabled} from "../../../redux/reducers/packsReducer";
 import SuperButton from "../../../common/SuperButton/SuperButton";
 import stylesForButton from "../../../common/styles/styles.module.scss";
 import ModalWindow from "../../../common/ModalWindow/ModalWindow";
@@ -21,6 +21,11 @@ const DeleteCard: React.FC<PropsType> = React.memo((
   const dispatch = useDispatch()
   const modalText = useSelector<RootStateType, string>(state => state.packs.modalText)
 
+  const closeModal = () => {
+    dispatch(setIsModeDelete(false))
+    dispatch(setOnDisabled(false))
+  }
+
   return (
     <ModalWindow
       setIsMode={setIsModeDelete}
@@ -32,7 +37,7 @@ const DeleteCard: React.FC<PropsType> = React.memo((
       </p>
       <SuperButton
         className={stylesForButton.buttonForModalCancel}
-        onClick={() => dispatch(setIsModeDelete(false))}
+        onClick={() => closeModal}
       >Cancel</SuperButton>
       <SuperButton
         className={stylesForButton.buttonForModalSave}

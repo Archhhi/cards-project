@@ -1,6 +1,7 @@
 import React from "react"
 import s from './ModalWindow.module.scss'
 import {useDispatch} from "react-redux";
+import {setIsModeAdd, setOnDisabled} from "../../redux/reducers/packsReducer";
 
 type PropsType = {
   setIsMode: (isMode: boolean) => void
@@ -19,10 +20,15 @@ const ModalWindow: React.FC<PropsType> = React.memo((
 
   const dispatch = useDispatch()
 
+  const closeModal = () => {
+    dispatch(setIsMode(false))
+    dispatch(setOnDisabled(false))
+  }
+
   return (
     <div id="myModal" className={s.modal}>
       <div className={s.modal_content}>
-        <span className={s.close} onClick={() => dispatch(setIsMode(false))}>&times;</span>
+        <span className={s.close} onClick={() => closeModal()}>&times;</span>
         <span>{title}</span>
         {restProps.children}
       </div>
